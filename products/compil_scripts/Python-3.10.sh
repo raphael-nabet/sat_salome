@@ -17,7 +17,7 @@ PYTHON_VERSION="${PYTHON_VERSION_SPLIT[0]}.${PYTHON_VERSION_SPLIT[1]}"
 # --without-pymalloc: disable specialized mallocs
 # --with-ensurepip  : installation using bundled pip
 # --enable-optimizations:  recommandé et utilisé par Nijni -> mais trop long!
-CONFIGURE_ARGUMENTS="--enable-shared --with-threads --with-ensurepip=install --with-ssl --enable-loadable-sqlite-extensions --with-pymalloc"
+CONFIGURE_ARGUMENTS="--enable-shared --with-threads --with-ensurepip=install --with-ssl --with-pymalloc"
 
 echo
 echo   "*** configure --prefix=$PRODUCT_INSTALL $CONFIGURE_ARGUMENTS"
