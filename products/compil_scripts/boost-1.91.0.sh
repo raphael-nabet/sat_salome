@@ -1,11 +1,12 @@
 #!/bin/bash
 
 echo "##########################################################################"
-echo "$PRODUCT_NAME $VERSION"
+echo "BOOST" $VERSION
 echo "##########################################################################"
 
-cd $BUILD_DIR
-cp -r $SOURCE_DIR/* .
+
+
+cd $SOURCE_DIR
 
 echo
 echo "*** bootstrap.sh"
@@ -16,9 +17,9 @@ then
     exit 1
 fi
 
-echo "*** b2 ${MAKE_OPTIONS} install"
+echo "*** b2 cxxflags="-std=c++14" ${MAKE_OPTIONS} install"
 
-./b2 cxxflags="-std=c++17" ${MAKE_OPTIONS} install
+./b2 cxxflags="-std=c++14" ${MAKE_OPTIONS} install
 
 if [ $? -ne 0 ]
 then
@@ -28,3 +29,4 @@ fi
 
 echo
 echo "########## END"
+
