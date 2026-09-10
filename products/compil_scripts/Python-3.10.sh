@@ -17,7 +17,13 @@ PYTHON_VERSION="${PYTHON_VERSION_SPLIT[0]}.${PYTHON_VERSION_SPLIT[1]}"
 # --without-pymalloc: disable specialized mallocs
 # --with-ensurepip  : installation using bundled pip
 # --enable-optimizations:  recommandé et utilisé par Nijni -> mais trop long!
-CONFIGURE_ARGUMENTS="--enable-shared --with-threads --with-ensurepip=install --with-ssl --with-pymalloc"
+CONFIGURE_ARGUMENTS="--enable-shared --with-threads --with-ensurepip=install --with-pymalloc"
+
+if [ -n "$OPENSSL_DIR" ]; then 
+    CONFIGURE_ARGUMENTS+=" --with-openssl=$OPENSSL_DIR"
+else
+    CONFIGURE_ARGUMENTS+=" --with-ssl --enable-loadable-sqlite-extensions" #TODO
+fi
 
 echo
 echo   "*** configure --prefix=$PRODUCT_INSTALL $CONFIGURE_ARGUMENTS"
