@@ -40,12 +40,8 @@ default_win:
 
 version_1_9_0:
 {
-    archive_info : {archive_name : "poetry-1.9.0.tar.gz"}
-    properties:
-    {
-      incremental : "yes"
-      pip : "yes"
-    }
+    compil_script: "poetry_core-1.9.0.sh"
+    archive_info : {archive_name : "poetry_core-1.9.0.tar.gz"}
 } 
 
 version_1_9_0_x86_64:

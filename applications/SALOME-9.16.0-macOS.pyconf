@@ -140,7 +140,7 @@ APPLICATION :
         Pillow : '8.4.0'
         planegcs : '0.18-3cb6890'
         ply : '3.8'
-        poetry : {tag: '1.8.3', base: 'no', section: 'version_1_8_3_macOS' }
+        poetry : '1.8.3'
         poetry_core : '1.9.0'
         proj : '9.2.1'
         pyasn1 : '0.6.1'

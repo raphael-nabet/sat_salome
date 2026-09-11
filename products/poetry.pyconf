@@ -31,12 +31,8 @@ default :
 
 version_1_8_3:
 {
+    compil_script: "poetry-1.8.3.sh"
     archive_info : {archive_name : "poetry-1.8.3.tar.gz"}
-    properties:
-    {
-      incremental : "yes"
-      pip : "yes"
-    }
 }
 
 default_win:
@@ -59,13 +55,3 @@ version_1_8_3_x86_64:
     compil_script: "poetry-1.8.3.sh"
     archive_info : {archive_name : "poetry-1.8.3-x86_64.tar.gz"}
 }
-
-version_1_8_3_macos:
-{
-    archive_info : {archive_name : "poetry-1.8.3.tar.gz"}
-    properties:
-    {
-        incremental : "yes"
-        pip : "yes"
-    }
-} 
