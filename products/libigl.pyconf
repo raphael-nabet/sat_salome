@@ -60,8 +60,8 @@ version_v2_5_0:
             "eigen",
             "embree",
             "cgal",
-            "lapack"
            ]
+  opt_depend : ["lapack"]
 }
 
 version_v2_5_0_FD44:

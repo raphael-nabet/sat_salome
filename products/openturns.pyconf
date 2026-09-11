@@ -40,7 +40,6 @@ version_1_25_1 :
     patches : ['openturns-1.25.1.0001.patch']
     depend : [
 		'Python',
-		'lapack',
 		'hdf5',
 		'tbb',
 		'nlopt',
@@ -56,7 +55,7 @@ version_1_25_1 :
 		'scikit_learn',
 		'tqdm'
 	    ]
-    opt_depend : ['pandas', 'statsmodels', 'patsy', 'decorator']
+    opt_depend : ['pandas', 'statsmodels', 'patsy', 'decorator', 'lapack']
 }
 
 version_1_25_1_FD44 :

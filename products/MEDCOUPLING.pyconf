@@ -482,11 +482,10 @@ version_V9_16_0_MPI :
               "pytz",
               "numpy",
               "scipy",
-              "lapack",
               "CONFIGURATION",
               "openmpi"
               ]
-        opt_depend : ["ParMetis", "metis", "BasicIterativeStatistics"]
+        opt_depend : ["ParMetis", "metis", "BasicIterativeStatistics", "lapack"]
 }
 
 version_V9_16_0_MPI_DB11 :
