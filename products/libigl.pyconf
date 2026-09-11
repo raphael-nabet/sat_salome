@@ -59,7 +59,7 @@ version_v2_5_0:
             "libxml2",
             "eigen",
             "embree",
-            "cgal",
+            "cgal"
            ]
   opt_depend : ["lapack"]
 }
