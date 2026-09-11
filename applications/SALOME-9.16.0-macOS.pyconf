@@ -161,7 +161,7 @@ APPLICATION :
         Python : '3.10.16'
         pythonfmu : '0.6.3'
         pytz : '2021.1'
-        pyyaml : {tag: '6.0',   base: 'no', section: 'version_6_0_x86_64'    } #TODO ARM version
+        pyyaml : {tag: '6.0',   base: 'no', section: 'version_6_0_macOS'}
         qt : '5.15.15'
         qtpy : {tag : '2.4.1', base : 'no', section : 'version_2_4_1_no_pip', hpc: 'no'}
         qwt : '6.1.6'
