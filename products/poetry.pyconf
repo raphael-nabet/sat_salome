@@ -29,6 +29,16 @@ default :
     }
 }
 
+version_1_8_3:
+{
+    archive_info : {archive_name : "poetry-1.8.3.tar.gz"}
+    properties:
+    {
+      incremental : "yes"
+      pip : "yes"
+    }
+}
+
 default_win:
 {
     properties:

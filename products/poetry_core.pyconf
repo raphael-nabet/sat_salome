@@ -37,6 +37,16 @@ default_win:
     }
 }
 
+version_1_9_0_macos:
+{
+    archive_info : {archive_name : "poetry-1.9.0.tar.gz"}
+    properties:
+    {
+        incremental : "yes"
+        pip : "yes"
+    }
+} 
+
 version_1_9_0_x86_64:
 {
       compil_script: "poetry_core-1.9.0.sh"
