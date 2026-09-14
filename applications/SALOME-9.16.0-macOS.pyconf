@@ -42,6 +42,7 @@ APPLICATION :
         BasicIterativeStatistics :  'v0.1.0'
         bcrypt : '5.0.0'
         beniget : '0.4.0'
+        bison : 'native'
         boost : '1.91.0'
         CAS : {tag : 'SALOME_9_16_V7_9_0b2', section: 'version_SALOME_9_16_V7_9_0b2', base:  'no'}
         catalyst: {tag: '2.0', section: 'version_v2_0_0', base: 'no'}
@@ -83,7 +84,7 @@ APPLICATION :
         mpfr : 'native'
         gdal : '3.7.1'
         gmsh : '4.14.1'
-        graphviz : '2.44.1'
+        graphviz : {tag:'2.49.3', base: 'no', section: 'version_2_49_3_macOS' }
         h5py : {tag: '3.9.0', base: 'no', section: 'version_3_9_0_no_pip'}
         hdf5 : '1.14.6'
         idna : '2.7'
