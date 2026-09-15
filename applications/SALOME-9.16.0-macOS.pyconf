@@ -138,7 +138,7 @@ APPLICATION :
         paramiko : '4.0.0'
         PERSALYS: 'v19.0'
         petsc : '3.24.3'
-        Pillow : '8.4.0'
+        Pillow : {tag:'8.4.0', base: 'no', section: 'version_8_4_0_macOS' }
         planegcs : '0.18-3cb6890'
         ply : '3.8'
         poetry : {tag:'1.8.3', base: 'no', section: 'version_1_8_3_macOS' }
