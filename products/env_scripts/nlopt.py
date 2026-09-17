@@ -3,14 +3,18 @@
 import os.path, platform
 
 def set_env(env, prereq_dir, version):
-  env.set("NLOPT_ROOT_DIR",prereq_dir)
-  pyver = 'python' + env.get('PYTHON_VERSION')
-  if platform.system() == "Windows" :
-    env.prepend('PATH',os.path.join(prereq_dir, 'bin'))
-    env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
-  else :
-    env.prepend('LD_LIBRARY_PATH',os.path.join(prereq_dir, 'lib'))
-    env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
+    env.set("NLOPT_ROOT_DIR",prereq_dir)
+    pyver = 'python' + env.get('PYTHON_VERSION')
+
+    if platform.system() == "Windows" :
+        env.prepend('PATH',os.path.join(prereq_dir, 'bin'))
+        env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
+    elif platform.system() == "Darwin" :
+        env.prepend('DYLD_LIBRARY_PATH',os.path.join(prereq_dir, 'lib'))
+        env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
+    else :
+        env.prepend('LD_LIBRARY_PATH',os.path.join(prereq_dir, 'lib'))
+        env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
 
 def set_nativ_env(env):
     prereq_dir='/usr'
@@ -36,4 +40,8 @@ def set_nativ_env(env):
     env.set('NLOPT_INCLUDE_DIR', prereq_inc)
     if prereq_bin != "/usr/bin":
         env.prepend('PATH', prereq_bin)
-    env.prepend('LD_LIBRARY_PATH', os.path.join(prereq_dir,'lib'))
+
+    if platform.system() == "Darwin" :
+        env.prepend('DYLD_LIBRARY_PATH', os.path.join(prereq_dir,'lib'))
+    else:
+        env.prepend('LD_LIBRARY_PATH', os.path.join(prereq_dir,'lib'))
