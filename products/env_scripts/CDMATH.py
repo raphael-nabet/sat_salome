@@ -14,9 +14,9 @@ def set_env(env, prereq_dir, version):
     env.prepend('PATH', os.path.join(root, 'include'))
 
     if platform.system() == "Darwin" :
-        env.prepend('LD_LIBRARY_PATH', os.path.join(root, 'lib'))
-    else :
         env.prepend('DYLD_LIBRARY_PATH', os.path.join(root, 'lib'))
+    else :
+        env.prepend('LD_LIBRARY_PATH', os.path.join(root, 'lib'))
 
     env.prepend('PYTHONPATH', os.path.join(root, 'lib'))
     env.prepend('PYTHONPATH', os.path.join(root, 'lib', 'cdmath'))
