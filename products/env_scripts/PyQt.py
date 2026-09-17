@@ -17,26 +17,22 @@ def set_env(env, prereq_dir, version):
     env.prepend('PYTHONPATH', prereq_dir)
     pyver = 'python' + env.get('PYTHON_VERSION')
 
-    if not platform.system() == "Windows" :
+    if platform.system() == "Windows" :
+        if '5.15' in version:
+            env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', 'site-packages'))
+        else:
+            env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
+        env.set('PYUIC5',os.path.join(prereq_dir, 'bin','pyuic5.bat'))
+
+    elif platform.system() == "Darwin" :
+        env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
+        env.set('PYUIC5',os.path.join(prereq_dir, 'bin','pyuic5'))
+        env.prepend('DYLD_LIBRARY_PATH', prereq_dir)
+
+    else:
         env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
         env.set('PYUIC5',os.path.join(prereq_dir, 'bin','pyuic5'))
         env.prepend('LD_LIBRARY_PATH', prereq_dir)
-
-    if platform.system() == "Darwin" :
-        if '5.15' in version:
-            env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', 'site-packages'))
-        else:
-            env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
-        env.set('PYUIC5',os.path.join(prereq_dir, 'bin','pyuic5.bat'))
-        env.prepend('DYLD_LIBRARY_PATH', prereq_dir) # need review
-
-    else:
-        if '5.15' in version:
-            env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', 'site-packages'))
-        else:
-            env.prepend('PYTHONPATH', os.path.join(prereq_dir, 'lib', pyver, 'site-packages'))
-        env.set('PYUIC5',os.path.join(prereq_dir, 'bin','pyuic5.bat'))
-        env.prepend('LD_LIBRARY_PATH', prereq_dir) # need review
 
 def set_nativ_env(env):
     env.set('PYQT5_ROOT_DIR', '/usr')
