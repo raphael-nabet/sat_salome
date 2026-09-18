@@ -37,6 +37,7 @@ version_19_1_7 :
     {
       archive_name : "llvm-project-19.1.7.src.tar.gz"
     }
+    patches : [ 'llvm-19.1.7-incorrect-std-template-specializations.patch' ]
 }
 
 version_16_0_6 :
