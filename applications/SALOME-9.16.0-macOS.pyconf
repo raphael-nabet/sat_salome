@@ -23,6 +23,7 @@ APPLICATION :
            VTK_SMP_IMPLEMENTATION_TYPE : TBB # OpenMP # choose among: sequential / OpenMP / TBB switches
            SALOME_GMSH_HEADERS_STD : '1'
            OMNIORBPY_REMOVE_INIT : '0'
+           MACOSX_DEPLOYMENT_TARGET :'15.0'
         }
         launch :
         {
