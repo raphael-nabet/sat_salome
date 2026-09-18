@@ -144,6 +144,7 @@ APPLICATION :
         Pillow : {tag:'8.4.0', base: 'no', section: 'version_8_4_0_macOS' }
         planegcs : '0.18-3cb6890'
         ply : '3.8'
+        pmix : '5.0.11'
         poetry : {tag:'1.8.3', base: 'no', section: 'version_1_8_3_macOS' }
         poetry_core : {tag:'1.9.0', base: 'no', section: 'version_1_9_0_macOS' }
         proj : '9.2.1'
