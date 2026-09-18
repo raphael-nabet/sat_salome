@@ -129,7 +129,7 @@ APPLICATION :
         ONNX: '1.22.0'
         openblas: '0.3.29'
         opencv : '3.2.0'
-        openmpi : '4.0.3'
+        openmpi : '5.0.10'
         openssl : '3.4.7'
         openturns: '1.25.1'
         openVKL: '1.0.1'
