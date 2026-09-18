@@ -79,6 +79,7 @@ APPLICATION :
         gast : '0.5.0'
         gssapi :'1.8.3'
         hwloc : '2.14.0'
+        libevent : '2.1.13'
         libigl : 'v2.5.0'
         mpc : 'native'
         gmp : 'native'
