@@ -11,7 +11,7 @@ To compile and launch SALOME, please follow the steps below. This assumes that D
 2.  Launch one container from this image
 
   ```bash
-     docker run --rm -it --volume $PWD --workdir $PWD salome-ub24.04-x86_64:latest
+     docker run --rm -it --volume $PWD:$PWD --workdir $PWD salome-ub24.04-x86_64:latest
   ```
 
 3. Construct SALOME in that container
