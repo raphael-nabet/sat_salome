@@ -9,7 +9,7 @@ default :
     {
        rpm     : ["jsoncpp"]
        rpm_dev : ["jsoncpp-devel"]
-       apt     : ["libjsoncpp"]
+       apt     : []
        apt_dev : ["libjsoncpp-dev"]
     }
     environ :
