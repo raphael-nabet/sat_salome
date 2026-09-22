@@ -55,22 +55,14 @@ fi
 
 # qt-harfbuzz - see spns #9694
 CONFIGURE_OPTIONS+=" -no-harfbuzz"
-CONFIGURE_OPTIONS+=" -no-opengl"
+CONFIGURE_OPTIONS+=" -no-feature-geoservices_mapboxgl"
+
 if [ -n "$OPENSSL_ROOT_DIR" ]; then 
     CONFIGURE_OPTIONS+=" -ssl  -openssl -I $OPENSSL_PREFIX/include"
     CONFIGURE_OPTIONS+=" -openssl-linked OPENSSL_PREFIX=$OPENSSL_ROOT_DIR"
 else
     CONFIGURE_OPTIONS+=" -no-openssl"
 fi
-
-# TEST
-# CONFIGURE_OPTIONS+=" -no-glib"
-# CONFIGURE_OPTIONS+=" -no-jasper"
-
-# if [ "$DIST_NAME" = "macOS" ]; then
-#     CONFIGURE_OPTIONS+=" -sysroot $(xcrun --show-sdk-path) -opengl desktop"
-#     CONFIGURE_OPTIONS+=" QMAKE_APPLE_DEVICE_ARCHS=arm64"
-# fi
 
 echo "*** SED"
 if [ "$DIST_NAME" = "macOS" ]; then
