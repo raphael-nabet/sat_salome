@@ -70,7 +70,7 @@ APPLICATION :
         docutils : '0.20.1'
         doxygen : '1.8.14'
         eigen : '3.3.4'
-        embree : '3.13.1'
+        embree : {tag:'4.4.0', base: 'no', section: 'version_4_4_0_macOS' }
         FMILibrary : '2.0.3'
         fftw : '3.3.10'
         fonttools : '4.48.1'
