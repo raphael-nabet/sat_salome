@@ -173,7 +173,7 @@ APPLICATION :
         rapidjson : '1.1.0'
         requests : '2.31.0'
         rich : '13.7.1'
-        rkCommon : '1.7.0'
+        rkCommon : '1.11.0'
         root: '6.28.10'
         salome_system : 'native'
         scipy : '1.11.4'
