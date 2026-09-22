@@ -95,7 +95,7 @@ APPLICATION :
         importlib_metadata : '7.0.1'
         importlib_resources: '6.1.1'
         invoke : '2.2.1'
-        ispc : '1.16.1'
+        ispc : {tag: '1.31.0', base: 'no', section: 'version_1_31_0_macOS'}
         Jinja2 : '3.1.3'
         joblib : '1.2.0'
         jsoncpp : '1.9.6'
