@@ -158,7 +158,7 @@ APPLICATION :
         Pygments : '2.17.2'
         pyparsing : '3.1.1'
         pyproject_metadata: '0.8.0'
-        PyQt : '5.15.3'
+        PyQt : '5.15.7'
         pyqwt: {tag : '0.12.1', base : 'no', section : 'version_0_12_1_no_pip', hpc: 'no'}
         pyreadline : '2.0'
         pyside  : {tag: 'v5.15.17', base: 'no', section: 'version_v5_15_17'  } 
