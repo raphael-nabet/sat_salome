@@ -15,5 +15,23 @@ else
     exit 1
 fi
 
+if [ -d "$SOURCE_DIR/lib" ]
+then
+    echo "INFO: about to copy the ispc library utility to the installation folder: $PRODUCT_INSTALL/lib"
+    cp  -r $SOURCE_DIR/lib $PRODUCT_INSTALL/lib
+else
+    echo "FATAL: NOT IMPLEMENTED"
+    exit 1
+fi
+
+if [ -d "$SOURCE_DIR/include" ]
+then
+    echo "INFO: about to copy the ispc include folder to the installation folder: $PRODUCT_INSTALL/include"
+    cp  -r $SOURCE_DIR/include $PRODUCT_INSTALL/include
+else
+    echo "FATAL: NOT IMPLEMENTED"
+    exit 1
+fi
+
 echo
 echo "########## END"
