@@ -23,37 +23,33 @@ unset SWIG_LIB
 
 CONFIGURE_FLAGS=
 CONFIGURE_FLAGS+=' --enable-mesgerr'
+CONFIGURE_FLAGS+=' --enable-installtest'
+CONFIGURE_FLAGS+=" --with-f90"
+CONFIGURE_FLAGS+=' CFLAGS=-m64 CXXFLAGS=-m64'
 
 if [ "$DIST_NAME" == "macOS" ]; then
     export SDKROOT="$(xcrun --show-sdk-path)"
     export CFLAGS="-isysroot $(xcrun --show-sdk-path) -m64"
     export CPPFLAGS="-isysroot $(xcrun --show-sdk-path) -m64"
-
-    CONFIGURE_FLAGS+=" --enable-fortran=no"
+    
     CONFIGURE_FLAGS+=' --enable-python=no'
-    CONFIGURE_FLAGS+=' --enable-installtest=no'
-    CONFIGURE_FLAGS+=' CFLAGS=-Wno-error=incompatible-pointer-types CXXFLAGS=-Wno-error=incompatible-pointer-types'
+#    CONFIGURE_FLAGS+=" PYTHON=$PYTHON_ROOT_DIR/bin/python3"
 
 else
-    CONFIGURE_FLAGS+=' CFLAGS=-m64 CXXFLAGS=-m64'
     CONFIGURE_FLAGS+=' --enable-python=yes'
-    CONFIGURE_FLAGS+=' --enable-installtest'
-    CONFIGURE_FLAGS+=" --with-f90"
-    if [ -n "$SAT_HPC" ]; then
-        export FC=${MPI_Fortran_COMPILER}
-    else
-        export F77=gfortran
-    fi
 fi
 
 if [ -n "$SAT_HPC" ]; then
     export CXX=${MPI_CXX_COMPILER}
     export CC=${MPI_C_COMPILER}
+    export FC=${MPI_Fortran_COMPILER}
 
     if [[ $(nproc) -lt 8 ]]; then
         echo "WARNING: number of procs is less than 8. Adding --oversubscribe option"
         export OMPI_MCA_rmaps_base_oversubscribe=true
     fi
+else
+    export F77=gfortran
 fi
 
 if [ "$SALOME_USE_64BIT_IDS" == "1" ]; then
@@ -65,7 +61,7 @@ if [ "$SALOME_USE_64BIT_IDS" == "1" ]; then
          FFLAGS+=" -fallow-argument-mismatch"
         FCFLAGS+=" -fallow-argument-mismatch"
     fi
-    export  FFLAGS=${FFLAGS}
+    export FFLAGS=${FFLAGS}
     export FCFLAGS=${FCFLAGS}
 else
     export FFLAGS="-g -O2 -ffixed-line-length-none"
@@ -78,7 +74,7 @@ fi
 
 if [ "${SAT_hdf5_IS_NATIVE}" != "1" ]; then
     CONFIGURE_FLAGS+=" --with-hdf5=$HDF5_ROOT_DIR"
-#    CONFIGURE_FLAGS+=" LDFLAGS=-Wl,-rpath,$HDF5_ROOT_DIR"
+#    CONFIGURE_FLAGS+=" LDFLAGS=-Wl,-rpath,$HDF5_ROOT_DIR/lib"
 else
     case $LINUX_DISTRIBUTION in
         CO*|FD*)
@@ -89,19 +85,13 @@ else
 fi
 
 if [ "$DIST_NAME" != "macOS" ] && [ "${LINUX_DISTRIBUTION}" != "DB13" ]; then
-    echo toto
+#if [ "${LINUX_DISTRIBUTION}" != "DB13" ]; then
     CONFIGURE_FLAGS+=" --with-swig=$SWIG_ROOT_DIR"
 fi
 
 echo
-
-if [ "$DIST_NAME" = "macOS" ]; then
-    echo "*** configure   --prefix=$PRODUCT_INSTALL $CONFIGURE_FLAGS"
-    $SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL $CONFIGURE_FLAGS
-else
-    echo "*** configure   --prefix=$PRODUCT_INSTALL FFLAGS=\"${FFLAGS}\"   FCFLAGS=\"${FCFLAGS}\"   $CONFIGURE_FLAGS"
-    $SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL FFLAGS="${FFLAGS}"     FCFLAGS="${FCFLAGS}"     $CONFIGURE_FLAGS
-fi
+echo "*** configure   --prefix=$PRODUCT_INSTALL FFLAGS=\"${FFLAGS}\"   FCFLAGS=\"${FCFLAGS}\"   $CONFIGURE_FLAGS"
+$SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL FFLAGS="${FFLAGS}"     FCFLAGS="${FCFLAGS}"     $CONFIGURE_FLAGS
 
 if [ $? -ne 0 ]; then
     echo "ERROR on configure"
@@ -177,4 +167,3 @@ fi
 
 echo
 echo "########## END"
-
