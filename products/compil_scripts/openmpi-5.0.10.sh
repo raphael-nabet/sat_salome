@@ -29,6 +29,12 @@ fi
 
 echo $PMIX_ROOR_DIR
 
+if [ "$DIST_NAME" == "macOS" ]; then
+    export SDKROOT="$(xcrun --show-sdk-path)"
+    export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
+    export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+fi
+
 CONFIG_OPTIONS=
 CONFIG_OPTIONS+=" --prefix=$PRODUCT_INSTALL"
 CONFIG_OPTIONS+=" --with-pmix=$PMIX_ROOR_DIR"
