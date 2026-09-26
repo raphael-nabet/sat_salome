@@ -6,6 +6,15 @@ echo "##########################################################################
 
 LINUX_DISTRIBUTION="$DIST_NAME$DIST_VERSION"
 
+if [ "$DIST_NAME" == "macOS" ]; then
+    libExtension="dylib"
+    export SDKROOT="$(xcrun --show-sdk-path)"
+    export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
+    export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+else
+    libExtension="so"
+fi
+
 CMAKE_OPTIONS=
 
 ### common compiler and install settings
@@ -116,7 +125,7 @@ CMAKE_OPTIONS+=" -DVTK_QT_VERSION=5"
 CMAKE_OPTIONS+=" -DPARAVIEW_USE_PYTHON:BOOL=ON"
 if [ "${SAT_Python_IS_NATIVE}" != "1" ]; then
     CMAKE_OPTIONS+=" -DPython3_INCLUDE_DIR:STRING=${PYTHON_ROOT_DIR}/include/python${PYTHON_VERSION}"
-    CMAKE_OPTIONS+=" -DPython3_LIBRARY:STRING=${PYTHON_ROOT_DIR}/lib/libpython${PYTHON_VERSION}.so"
+    CMAKE_OPTIONS+=" -DPython3_LIBRARY:STRING=${PYTHON_ROOT_DIR}/lib/libpython${PYTHON_VERSION}.${libExtension}"
     CMAKE_OPTIONS+=" -DPython3_EXECUTABLE=${PYTHON_ROOT_DIR}/bin/python${PYTHON_VERSION}"
 else
     case $LINUX_DISTRIBUTION in
@@ -157,7 +166,7 @@ if [ -n "$SAT_HPC" ]; then
         echo "WARNING: VTK_SMP_IMPLEMENTATION_TYPE was set to: TBB..."
         CMAKE_OPTIONS+=" -DVTK_SMP_IMPLEMENTATION_TYPE=TBB"
     fi
-    CMAKE_OPTIONS+=" -DVTK_SMP_ENABLE_OPENMP:BOOL=ON -DVTK_SMP_ENABLE_STDTHREAD:BOOL=ON -DVTK_SMP_ENABLE_SEQUENTIAL:BOOL=ON"
+    CMAKE_OPTIONS+=" -DENABLE_openmp=OFF"
     CMAKE_OPTIONS+=" -DVTK_MODULE_ENABLE_VTK_FiltersParallelMPI=YES"
     CMAKE_OPTIONS+=" -DVTK_MODULE_ENABLE_VTK_ParallelMPI=YES"
     CMAKE_OPTIONS+=" -DMPI_C_FOUND=${MPI_C_FOUND}"
@@ -198,12 +207,12 @@ if [ "${SAT_hdf5_IS_NATIVE}" != "1" ]; then
     CMAKE_OPTIONS+=" -DHDF5_USE_STATIC_LIBRARIES:BOOL=OFF"
     CMAKE_OPTIONS+=" -DHDF5_ROOT:PATH=${HDF5_ROOT_DIR}"
     CMAKE_OPTIONS+=" -DHDF5_hdf5_LIBRARY_RELEASE=${HDF5_ROOT_DIR}/lib"
-    CMAKE_OPTIONS+=" -DHDF5_hdf5_hl_LIBRARY_RELEASE=${HDF5_ROOT_DIR}/lib/libhdf5_hl.so"
-    CMAKE_OPTIONS+=" -DHDF5_hdf5_CXX_LIBRARY_RELEASE=${HDF5_ROOT_DIR}/lib/libhdf5_cpp.so"
-    CMAKE_OPTIONS+=" -DHDF5_HL_LIBRARY=${HDF5_ROOT_DIR}/lib/libhdf5_hl.so"
+    CMAKE_OPTIONS+=" -DHDF5_hdf5_hl_LIBRARY_RELEASE=${HDF5_ROOT_DIR}/lib/libhdf5_hl.${libExtension}"
+    CMAKE_OPTIONS+=" -DHDF5_hdf5_CXX_LIBRARY_RELEASE=${HDF5_ROOT_DIR}/lib/libhdf5_cpp.${libExtension}"
+    CMAKE_OPTIONS+=" -DHDF5_HL_LIBRARY=${HDF5_ROOT_DIR}/lib/libhdf5_hl.${libExtension}"
     CMAKE_OPTIONS+=" -DHDF5_C_INCLUDE_DIR=${HDF5_ROOT_DIR}/include"
-    CMAKE_OPTIONS+=" -DHDF5_HL_LIBRARY=${HDF5_ROOT_DIR}/lib/libhdf5_hl.so"
-    CMAKE_OPTIONS+=" -DHDF5_C_LIBRARY=${HDF5_ROOT_DIR}/lib/libhdf5.so"
+    CMAKE_OPTIONS+=" -DHDF5_HL_LIBRARY=${HDF5_ROOT_DIR}/lib/libhdf5_hl.${libExtension}"
+    CMAKE_OPTIONS+=" -DHDF5_C_LIBRARY=${HDF5_ROOT_DIR}/lib/libhdf5.${libExtension}"
     CMAKE_OPTIONS+=" -DHDF5_INCLUDE_DIRS=${HDF5_ROOT_DIR}/include"
     CMAKE_OPTIONS+=" -DHDF5_IS_PARALLEL=OFF"
 else
@@ -218,7 +227,7 @@ CMAKE_OPTIONS+=" -DVTK_MODULE_USE_EXTERNAL_VTK_cgns=YES"
 CMAKE_OPTIONS+=" -DVTK_MODULE_ENABLE_VTK_IOCGNSReader:INTERNAL=YES"
 if [ -n "$CGNS_ROOT_DIR" ] && [ "${SAT_cgns_IS_NATIVE}" != "1" ]; then
     CMAKE_OPTIONS+=" -DCGNS_INCLUDE_DIR:PATH=${CGNS_ROOT_DIR}/include"
-    CMAKE_OPTIONS+=" -DCGNS_LIBRARY:PATH=${CGNS_ROOT_DIR}/lib/libcgns.so"
+    CMAKE_OPTIONS+=" -DCGNS_LIBRARY:PATH=${CGNS_ROOT_DIR}/lib/libcgns.${libExtension}"
 fi
 
 ### VisIt Database bridge settings
@@ -241,7 +250,7 @@ if [ -n "$LIBXML2_ROOT_DIR" ]; then
     if [ "${SAT_libxml2_IS_NATIVE}" != "1" ]
     then
         CMAKE_OPTIONS+=" -DLIBXML2_INCLUDE_DIR:STRING=${LIBXML2_ROOT_DIR}/include/libxml2"
-        CMAKE_OPTIONS+=" -DLIBXML2_LIBRARIES:STRING=${LIBXML2_ROOT_DIR}/lib/libxml2.so"
+        CMAKE_OPTIONS+=" -DLIBXML2_LIBRARIES:STRING=${LIBXML2_ROOT_DIR}/lib/libxml2.${libExtension}"
         CMAKE_OPTIONS+=" -DLIBXML2_XMLLINT_EXECUTABLE=${LIBXML2_ROOT_DIR}/bin/xmllint"
     fi
 fi
@@ -251,7 +260,7 @@ CMAKE_OPTIONS+=" -DVTK_MODULE_USE_EXTERNAL_VTK_freetype:BOOL=ON"
 if [ -n "$FREETYPE_ROOT_DIR" ]; then
     # with a native freetype, do not use these options
     CMAKE_OPTIONS+=" -DFREETYPE_INCLUDE_DIRS:STRING=${FREETYPE_ROOT_DIR}/include/freetype2"
-    CMAKE_OPTIONS+=" -DFREETYPE_LIBRARY:STRING=${FREETYPE_ROOT_DIR}/lib/libfreetype.so"
+    CMAKE_OPTIONS+=" -DFREETYPE_LIBRARY:STRING=${FREETYPE_ROOT_DIR}/lib/libfreetype.${libExtension}"
 fi
 
 ### Extra options
@@ -287,7 +296,7 @@ if [ -n "$GDAL_ROOT_DIR" ]; then
     CMAKE_OPTIONS+=" -DPARAVIEW_ENABLE_GDAL:BOOL=ON"
     if [ "${SAT_gdal_IS_NATIVE}" != "1" ]; then
         CMAKE_OPTIONS+=" -DGDAL_ROOT_DIR=$GDAL_ROOT_DIR"
-        CMAKE_OPTIONS+=" -DGDAL_LIBRARY=$GDAL_ROOT_DIR/lib/libgdal.so"
+        CMAKE_OPTIONS+=" -DGDAL_LIBRARY=$GDAL_ROOT_DIR/lib/libgdal.${libExtension}"
         CMAKE_OPTIONS+=" -DGDAL_INCLUDE_DIR=$GDAL_ROOT_DIR/include"
     fi
     CMAKE_OPTIONS+=" -DPARAVIEW_GENERATE_PROXY_DOCUMENTATION:BOOL=ON"

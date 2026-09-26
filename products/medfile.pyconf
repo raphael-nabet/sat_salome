@@ -47,10 +47,8 @@ version_6_0_1_macOS :
     {
         archive_name : "med-6.0.1.tar.gz"
     }
-    compil_script : "med-6.0.1" + $VARS.scriptExtension
-    test_build : "make check"
+    compil_script : "med-6.0.1-macos_arm64.sh"
     build_depend : ['swig']
-    patches : ['med-6.0.1-macOS-tests.patch']
 }
 
 version_6_0_1 :
