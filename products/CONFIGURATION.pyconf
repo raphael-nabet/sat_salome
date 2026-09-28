@@ -36,6 +36,11 @@ default_UB26_04:
   patches: ['CONFIGURATION_scotch_7.patch', 'CONFIGURATION_boost_1_89.patch']
 }
 
+version_V9_16_0_macOS:
+{
+  patches: ['CONFIGURATION-macOS-V9_16_0.p001.patch']
+}
+
 version_V9_16_0_UB26_04:
 {
   patches: ['CONFIGURATION_scotch_7.patch', 'CONFIGURATION_boost_1_89.patch']

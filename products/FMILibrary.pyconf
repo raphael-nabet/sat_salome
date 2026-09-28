@@ -37,6 +37,14 @@ version_2_4_1 :
 {
     build_source : "script"
     compil_script :  'FMILibrary-2.4.1.sh'
+    opt_depend : ['lapack', 'openblas']
+}
+
+version_3_0_4 :
+{
+    build_source : "script"
+    compil_script :  'FMILibrary-3.0.4.sh'
+    opt_depend : ['lapack', 'openblas']
 }
 
 version_2_4_1_FD44 :

@@ -15,7 +15,9 @@ def set_env(env, prereq_dir, version):
     else:
         env.set('SCOTCHDIR', prereq_dir)
         env.set('SCOTCH_ROOT_DIR', prereq_dir)
-
+    if platform.system() == "Darwin" :
+        env.prepend('DYLD_LIBRARY_PATH', os.path.join(prereq_dir, 'lib'))
+        
 def set_nativ_env(env):
     SCOTCH_HPC=False
 

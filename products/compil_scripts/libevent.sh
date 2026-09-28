@@ -27,13 +27,18 @@ if [ -f autogen.pl ] && [ ! -f configure ]; then
     fi
 fi
 
+if [ "$DIST_NAME" == "macOS" ]; then
+    export SDKROOT="$(xcrun --show-sdk-path)"
+    export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
+    export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+fi
+
 CONFIG_OPTIONS=
 CONFIG_OPTIONS+=" --prefix=$PRODUCT_INSTALL"
 
 if [ -n ${SAT_DEBUG} ]; then
-    CONFIG_OPTIONS+=" --enable-debug"
+    CONFIG_OPTIONS+=" --enable-debug ac_cv_func_pipe2=no"
 fi
-
 echo
 echo "*** configure"
 $BUILD_DIR/configure $CONFIG_OPTIONS
