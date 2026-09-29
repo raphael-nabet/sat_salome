@@ -24,7 +24,10 @@ def set_env(env, prereq_dir, version):
 
     for d in ld:
         env.append('PYTHONPATH', os.path.join(prereq_dir, d))
-        env.append(LD_LIBRARY_PATH, os.path.join(prereq_dir, d))
+        if platform.system() == "Darwin" :
+            env.append('DYLD_LIBRARY_PATH', os.path.join(prereq_dir, d))
+        else :
+            env.append('LD_LIBRARY_PATH', os.path.join(prereq_dir, d))
     # bos #38877
     pyver = 'python' + env.get('PYTHON_VERSION')
     if re.match(r'^V9_[1][0-6]_([a-zA-Z0-9]+)$', version) :
