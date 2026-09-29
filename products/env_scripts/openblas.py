@@ -15,7 +15,7 @@ def set_env(env, prereq_dir, version):
         env.set('OpenBLAS_DIR', os.path.join(prereq_dir, 'share','cmake','OpenBLAS'))
         env.prepend('PATH', os.path.join(prereq_dir, 'bin'))
 
-    elif not platform.system() == "Darwin" :
+    elif platform.system() == "Darwin" :
         env.prepend('DYLD_LIBRARY_PATH', os.path.join(prereq_dir, 'lib'))
         # FOR NUMPY AND SCIPY
         env.set('BLAS', os.path.join(prereq_dir, 'lib'))

@@ -10,7 +10,7 @@ def set_env(env, product_dir, version):
     if platform.system() == "Windows" :
         env.prepend('PATH', os.path.join(product_dir, 'bin'))
 
-    elif not platform.system() == "Darwin" :
+    elif platform.system() == "Darwin" :
         env.prepend('DYLD_LIBRARY_PATH', os.path.join(product_dir, 'lib'))
 
     else:
