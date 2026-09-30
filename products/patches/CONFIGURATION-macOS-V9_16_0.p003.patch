@@ -31,3 +31,16 @@ index a8f77ce..ade9d9a 100644
  SALOME_FIND_PACKAGE_AND_DETECT_CONFLICTS(Scotch SCOTCH_INCLUDE_DIRS 1)
  #MARK_AS_ADVANCED()
  
+diff --color=auto -Naur CONFIGURATION_old/cmake/FindSalomeBoost.cmake CONFIGURATION_new/cmake/FindSalomeBoost.cmake
+--- CONFIGURATION_old/cmake/FindSalomeBoost.cmake	2026-09-29 15:18:19
++++ CONFIGURATION_new/cmake/FindSalomeBoost.cmake	2026-09-29 15:17:55
+@@ -27,7 +27,7 @@
+ SET(Boost_USE_MULTITHREADED      ON)
+ SET(Boost_USE_STATIC_RUNTIME     OFF)
+ SET(Boost_NO_BOOST_CMAKE         ON)
+-SET(SalomeBoost_COMPONENTS       filesystem regex system thread date_time chrono serialization)
++SET(SalomeBoost_COMPONENTS       filesystem regex thread date_time chrono serialization)
+ SET(SalomeBoost_FIND_COMPONENTS ${SalomeBoost_COMPONENTS})
+ 
+ IF(WIN32)
+

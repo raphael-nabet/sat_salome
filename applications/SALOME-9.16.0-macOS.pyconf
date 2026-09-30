@@ -225,7 +225,7 @@ APPLICATION :
         'LIBBATCH' : {tag:'V2_6_1', base: 'no', section: 'version_V2_6_1_macOS'}
         'KERNEL' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'MEDCOUPLING' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_MPI_macOS', hpc: 'yes'}
-        'GUI'
+        'GUI' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS', hpc: 'yes'}
         'CommonGeomLib'
         'GEOM'
         'SMESH'

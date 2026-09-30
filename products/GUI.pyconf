@@ -73,6 +73,13 @@ default_win :
 
 }
 
+version_V9_16_0_macOS:
+{
+    cmake_options : "-DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DCMAKE_PREFIX_PATH=${BOOST_ROOT_DIR} -Dboost_system_DIR=${BOOST_ROOT_DIR} -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include -DQWT_INCLUDE_DIR=${QWT_ROOT_DIR}/lib/qwt.framework/Versions/6/Headers"
+    build_depend : ["cmake", "swig", "doxygen", "cppunit", "boost"]
+    patches : [ "GUI-V9.16.0-macOS.patch" ]
+}
+
 default_FD44:
 {
     cmake_options : "-DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_USE_PLOT2DVIEWER:BOOL=OFF" # FIXME
