@@ -128,7 +128,7 @@ APPLICATION :
         omniORBpy : '4.2.5'
 ##        ONNX: '1.22.0'
         openblas: '0.3.29'
-#        opencv : '3.2.0'
+        opencv : {tag:'3.2.0', base: 'no', section: 'version_3_2_0_macOS' }
         openmpi : '5.0.10'
         openssl : '3.4.7'
         openturns: {tag:'1.25.1', base: 'no', section: 'version_1_25_1_macOS' }
