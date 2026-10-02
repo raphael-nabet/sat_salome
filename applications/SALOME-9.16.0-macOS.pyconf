@@ -69,7 +69,7 @@ APPLICATION :
         dill : '0.3.4'
         docutils : '0.20.1'
         doxygen : '1.8.14'
-        eigen : '3.3.4'
+        eigen : {tag:'3.3.4', base: 'no', section: 'version_3_3_4_macOS' }
         embree : {tag:'4.4.0', base: 'no', section: 'version_4_4_0_macOS' }
         FMILibrary : '3.0.4'
         fftw : '3.3.10'
