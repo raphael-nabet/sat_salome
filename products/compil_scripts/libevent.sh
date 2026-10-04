@@ -31,6 +31,11 @@ if [ "$DIST_NAME" == "macOS" ]; then
     export SDKROOT="$(xcrun --show-sdk-path)"
     export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
     export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+    export PKG_CONFIG_PATH="$OPENSSL_ROOT_DIR/lib/pkgconfig"
+    export PKG_CONFIG_LIBDIR="$OPENSSL_ROOT_DIR/lib/pkgconfig:$SYSROOT/usr/lib/pkgconfig"
+    export PKG_CONFIG_SYSROOT_DIR=$SYSROOT
+    export CPPFLAGS="-I$OPENSSL_ROOT_DIR/include"
+    export LDFLAGS="-L$OPENSSL_ROOT_DIR/lib -Wl,-rpath,$OPENSSL_ROOT_DIR/lib"
 fi
 
 CONFIG_OPTIONS=
