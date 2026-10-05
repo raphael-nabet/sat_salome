@@ -22,7 +22,7 @@ default :
 
 version_5_0_10 :
 {
-    build_depend : [ "pmix" "libevent" ]
+    build_depend : [ "pmix", "libevent" ]
     compil_script : "openmpi-5.0.10.sh"
 }
 

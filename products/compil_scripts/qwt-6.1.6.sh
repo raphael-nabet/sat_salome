@@ -44,7 +44,7 @@ fi
 
 echo
 echo "** $QMAKE_BIN"
-$QMAKE_BIN
+$QMAKE_BIN QMAKE_LFLAGS_SONAME="-Wl,-install_name,@rpath/"
 if [ $? -ne 0 ]
 then
     echo "ERROR on $QMAKE_BIN"

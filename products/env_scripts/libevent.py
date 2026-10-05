@@ -10,7 +10,7 @@ def set_env(env, prereq_dir, version):
     env.prepend('PATH', os.path.join(prereq_dir, 'include'))
 
     if platform.system() == "Darwin" :
-        env.prepend('DYLD_LIBRARY_PATH', os.path.join(prereq_dir, 'lib'))
+        pass
     else :
         env.prepend('LD_LIBRARY_PATH', os.path.join(prereq_dir, 'lib'))
 

@@ -17,6 +17,12 @@ CMAKE_OPTIONS+=" -DCMAKE_INSTALL_PREFIX=${PRODUCT_INSTALL}"
 CMAKE_OPTIONS+=" -DCMAKE_VERBOSE_MAKEFILE=ON"
 CMAKE_OPTIONS+=" -DCMAKE_BUILD_TYPE=Release"
 
+if [ $DIST_NAME = "macOS" ]; then
+    for file in $(grep -ril "fvisibility" .); do
+        sed -i '' -e "s/-fvisibility=hidden//g" "$file"
+    done
+fi
+
 echo "*** cmake" $CMAKE_OPTIONS
 cmake $CMAKE_OPTIONS $SOURCE_DIR
 
