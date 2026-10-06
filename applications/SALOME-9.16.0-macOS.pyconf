@@ -117,7 +117,7 @@ APPLICATION :
         meson_python: '0.14.0'
         mpi4py : {tag: '3.1.0',  base: 'no', section : 'version_3_1_0_no_pip'}
         metis  : '5.1.0'
-        netgen : '5.3.1_with_CAS_7.8'
+        netgen : {tag: '5.3.1',  base: 'no', section : 'version_5_3_1_macOS'}
         netcdf : '4.9.2'
         netCDF4 : '1.6.5'
         ninja : {tag: '1.13.2',   base: 'no', section: 'version_1_13_2_macOS'}

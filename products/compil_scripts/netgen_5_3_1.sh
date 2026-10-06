@@ -21,7 +21,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-libtoolize --force --copy --automake
+if [ "$DIST_NAME" = "macOS" ]; then
+    glibtoolize --force --copy --automake
+else
+    libtoolize --force --copy --automake
+fi
 if [ $? -ne 0 ]; then
     echo "error on manual call to libtoolize"
     exit 1
