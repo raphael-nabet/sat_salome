@@ -219,7 +219,7 @@ APPLICATION :
         # SALOME MODULES :
         'CONFIGURATION' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'SALOME'
-        'SHAPER'
+        'SHAPER': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         #'dxf_shaper_plugin'
         'SHAPERSTUDY'
         'RESTRICTED'
