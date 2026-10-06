@@ -202,9 +202,8 @@ APPLICATION :
         swig : '4.0.2'
         tabulate : '0.9.0'
         tbb : '2023.1.0'
-        tcl : {tag:'8.6.0', base: 'no', section: 'version_8_6_0_macOS'}
+        tcltk : '8.6.18'
         threadpoolctl : '3.5.0'
-        tk : '8.6.0'
         toml: '0.10.2'
         tqdm : '4.66.5'
         tomli : '2.0.1'
