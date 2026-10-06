@@ -57,7 +57,6 @@ default :
 default_macOS :
 {
     cmake_options :   '-DCMAKE_CXX_FLAGS=-fpermissive -DNO_SolveSpace=TRUE -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DADD_COMPATIBILITY_TESTS=ON -DADD_MODELS_TESTS=ON -DADD_HDF_TESTS=ON -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include -DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}'
-    #-DCMAKE_SHARED_LINKER_FLAGS="-L${CommonGeomLib_ROOT_DIR} -lCommonGeomLib"'
 }
 
 default_win :
@@ -72,7 +71,7 @@ default_FD44 :
 
 version_V9_16_0_macOS :
 {
-    patches : ['SHAPER-V9.16.0-cmake-macOS.patch']
+    patches : ['SHAPER-V9.16.0-cmake-macOS.patch', 'SHAPER-V9.16.0-shared-lib-macOS.patch']
 }
 
 version_V9_16_0_FD44 :
