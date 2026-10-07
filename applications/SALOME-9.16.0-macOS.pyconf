@@ -229,7 +229,7 @@ APPLICATION :
         'GUI' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'CommonGeomLib'
         'GEOM'
-        'SMESH'
+        'SMESH' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'NETGENPLUGIN'
         'BLSURFPLUGIN'
         'GHS3DPLUGIN'
