@@ -30,7 +30,7 @@ default :
 
 default_macOS:
 {
-    cmake_options : '-DCMAKE_MACOSX_RPATH=ON -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_INSTALL_RPATH=\"@loader_path\" '
+    patches : [ "SALOMEBOOTSTRAP-macOS.patch" ]
 }
 
 default_win:

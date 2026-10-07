@@ -71,6 +71,7 @@ default_FD44 :
 
 version_V9_16_0_macOS :
 {
+    cmake_build_type : 'RelWithDebInfo'
     patches : ['SHAPER-V9.16.0-cmake-macOS.patch', 'SHAPER-V9.16.0-shared-lib-macOS.patch']
 }
 

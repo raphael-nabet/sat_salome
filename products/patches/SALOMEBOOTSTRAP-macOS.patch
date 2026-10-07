@@ -1,0 +1,363 @@
+From e9f9d576a2f06ff69438ff80f30ceb4d4dd8aecb Mon Sep 17 00:00:00 2001
+From: Nabil <nabil@cea.fr>
+Date: Wed, 7 Oct 2026 07:18:32 +0000
+Subject: [PATCH] macOS ARM64 (Apple Silicon) support
+
+- CMake >= 3.5 required (CMake 4.x, e.g. Homebrew, rejects 3.0)
+- @rpath/@loader_path install RPATH on macOS for libs, _KernelBasis and tests
+- _KernelBasis Python module: -undefined dynamic_lookup instead of linking libpython
+- replace unnamed POSIX semaphores (sem_init, not implemented on macOS) used for
+  trace-thread start handshake by dispatch semaphores behind portable helpers
+- statically initialise pthread mutexes with PTHREAD_MUTEX_INITIALIZER
+  (zero-filled mutex is invalid on macOS)
+- XSI strerror_r on macOS
+- missing <clocale>/<cwchar> includes (libc++)
+- SWIG >= 4.3: PyInt_FromLong -> PyLong_FromLong
+- launcher scripts: 'open' instead of 'xdg-open', DYLD_* env robustness,
+  bin/salome/python symlink to configured interpreter on macOS
+---
+ CMakeLists.txt                                | 12 +++++-
+ .../Basics/BasicsGenericDestructor.cxx        |  6 +--
+ __RUN_SALOME__/Basics/Basics_Utils.cxx        |  2 +
+ __RUN_SALOME__/KernelBasics/CMakeLists.txt    |  9 ++++-
+ __RUN_SALOME__/KernelBasics/KernelBasis.i     |  2 +-
+ __RUN_SALOME__/KernelBasics/Monitoring.cxx    |  6 +++
+ .../LaunchingScripts/CMakeLists.txt           | 10 ++++-
+ __RUN_SALOME__/LaunchingScripts/nameserver.py |  2 +-
+ .../LaunchingScripts/runSalomeCommon.py       |  2 +-
+ .../SALOMELocalTrace/BaseTraceCollector.cxx   | 10 +++--
+ .../SALOMELocalTrace/BaseTraceCollector.hxx   | 37 +++++++++++++++++++
+ .../SALOMELocalTrace/FileTraceCollector.cxx   |  6 +--
+ .../SALOMELocalTrace/LocalTraceCollector.cxx  |  6 +--
+ .../SALOMELocalTrace/Test/CMakeLists.txt      |  5 +++
+ salome                                        |  3 +-
+ 15 files changed, 97 insertions(+), 21 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 760fab0..41650f9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -16,7 +16,7 @@
+ #
+ # See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+ #
+-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
++CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+ PROJECT(SalomeBootstrap)
+ # upper case
+ STRING(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UC)
+@@ -81,6 +81,16 @@ SET( BOOTSTRAP_INSTALL_CMAKE ${ABS_APPLI_PATH}/${SALOME_INSTALL_CMAKE} CACHE PAT
+    "Install path: SALOME cmake files")
+ SET( SALOME_BOOTSTRAP __SALOME_BOOTSTRAP__ )
+ 
++# macOS: libraries are referenced through @rpath. All bootstrap libraries and
++# the _KernelBasis Python module are installed in ${BOOTSTRAP_INSTALL_LIBS},
++# so @loader_path is enough to resolve them, without relying on
++# DYLD_LIBRARY_PATH (stripped by SIP when going through /usr/bin/env or /bin/sh).
++IF(APPLE)
++  SET(CMAKE_MACOSX_RPATH ON)
++  SET(CMAKE_INSTALL_RPATH "@loader_path")
++  SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++ENDIF()
++
+ # For salome test
+ SET(BOOTSTRAP_TEST_DIR ${SALOME_EXT_INSTALL}/${SALOME_INSTALL_BINS}/test/BOOTSTRAP)
+ SET(BOOTSTRAP_TEST_LIB ${SALOME_EXT_INSTALL}/${SALOME_INSTALL_BINS}/test/BOOTSTRAP/lib)
+diff --git a/__RUN_SALOME__/Basics/BasicsGenericDestructor.cxx b/__RUN_SALOME__/Basics/BasicsGenericDestructor.cxx
+index 90cce08..3c79f28 100644
+--- a/__RUN_SALOME__/Basics/BasicsGenericDestructor.cxx
++++ b/__RUN_SALOME__/Basics/BasicsGenericDestructor.cxx
+@@ -35,12 +35,10 @@
+ void HouseKeeping();
+ 
+ std::list<PROTECTED_DELETE*> PROTECTED_DELETE::_objList;
+-#ifndef WIN32
+-pthread_mutex_t PROTECTED_DELETE::_listMutex;
+-#else
++// A zero-filled pthread_mutex_t is not a valid mutex on macOS:
++// always use the static initializer.
+ pthread_mutex_t PROTECTED_DELETE::_listMutex =
+   PTHREAD_MUTEX_INITIALIZER;
+-#endif
+ 
+ std::list<GENERIC_DESTRUCTOR*> *GENERIC_DESTRUCTOR::Destructors = 0;
+ static bool atExitSingletonDone = false ;
+diff --git a/__RUN_SALOME__/Basics/Basics_Utils.cxx b/__RUN_SALOME__/Basics/Basics_Utils.cxx
+index 135d6ad..4132b42 100644
+--- a/__RUN_SALOME__/Basics/Basics_Utils.cxx
++++ b/__RUN_SALOME__/Basics/Basics_Utils.cxx
+@@ -25,6 +25,8 @@
+ #include "Basics_Utils.hxx"
+ #include <string.h>
+ #include <stdlib.h>
++#include <clocale>   // setlocale, LC_NUMERIC, LC_CTYPE (not pulled in transitively by libc++)
++#include <cwchar>    // std::wcslen
+ 
+ #ifndef WIN32
+ #include <unistd.h>
+diff --git a/__RUN_SALOME__/KernelBasics/CMakeLists.txt b/__RUN_SALOME__/KernelBasics/CMakeLists.txt
+index b45d72e..48e9352 100644
+--- a/__RUN_SALOME__/KernelBasics/CMakeLists.txt
++++ b/__RUN_SALOME__/KernelBasics/CMakeLists.txt
+@@ -55,7 +55,14 @@ IF(${MACHINE} STREQUAL WINDOWS)
+ ENDIF(${MACHINE} STREQUAL WINDOWS)
+ #set_target_properties(_KernelBasis PROPERTIES SWIG_USE_TARGET_INCLUDE_DIRECTORIES TRUE)
+ 
+-SWIG_LINK_LIBRARIES(KernelBasis ${PYTHON_LIBRARIES} ${PLATFORM_LIBS} KERNELBasics SALOMEBasics)
++IF(APPLE)
++  # Python extension modules must not link libpython on macOS: symbols are
++  # resolved at import time against the running interpreter.
++  SWIG_LINK_LIBRARIES(KernelBasis ${PLATFORM_LIBS} KERNELBasics SALOMEBasics SALOMELog)
++  SET_PROPERTY(TARGET _KernelBasis APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
++ELSE()
++  SWIG_LINK_LIBRARIES(KernelBasis ${PYTHON_LIBRARIES} ${PLATFORM_LIBS} KERNELBasics SALOMEBasics)
++ENDIF()
+ install(TARGETS _KernelBasis DESTINATION ${BOOTSTRAP_INSTALL_LIBS})
+ install(FILES ${KernelBasis_HEADERS} DESTINATION ${BOOTSTRAP_INSTALL_HEADERS})
+ SALOME_INSTALL_SCRIPTS("${_swig_SCRIPTS}" ${BOOTSTRAP_INSTALL_LIBS}
+diff --git a/__RUN_SALOME__/KernelBasics/KernelBasis.i b/__RUN_SALOME__/KernelBasics/KernelBasis.i
+index 9d58372..4f73361 100644
+--- a/__RUN_SALOME__/KernelBasics/KernelBasis.i
++++ b/__RUN_SALOME__/KernelBasics/KernelBasis.i
+@@ -209,7 +209,7 @@ PyObject *GetBigObjOnDiskProtocolAndDirectorySwig()
+   std::string directory;
+   SALOME::BigObjTransferProtocol ret0 = SALOME::GetBigObjOnDiskProtocolAndDirectory(directory);
+   PyObject *ret(PyTuple_New(2));
+-  PyTuple_SetItem(ret,0,PyInt_FromLong(static_cast<char>( ret0 ) ));
++  PyTuple_SetItem(ret,0,PyLong_FromLong(static_cast<char>( ret0 ) ));
+   PyTuple_SetItem(ret,1,PyUnicode_FromString(directory.c_str()));
+   return ret;
+ }
+diff --git a/__RUN_SALOME__/KernelBasics/Monitoring.cxx b/__RUN_SALOME__/KernelBasics/Monitoring.cxx
+index cd46136..44963bf 100644
+--- a/__RUN_SALOME__/KernelBasics/Monitoring.cxx
++++ b/__RUN_SALOME__/KernelBasics/Monitoring.cxx
+@@ -60,7 +60,13 @@ static long LaunchMonitoringLinux(const std::string& pyScriptToEvaluate)
+   {
+     execlp(PYTHON_EXEC,PYTHON_EXEC,pyScriptToEvaluate.c_str(),nullptr);
+     char buff[1024];
++#ifdef __APPLE__
++    // XSI-compliant strerror_r (returns int) on macOS, GNU variant (returns char*) with glibc
++    strerror_r(errno, buff, sizeof(buff));
++    std::ostringstream oss; oss << "LaunchMonitoring : Error during exe : " << buff;
++#else
+     std::ostringstream oss; oss << "LaunchMonitoring : Error during exe : " << strerror_r(errno, buff, sizeof(buff));
++#endif
+     throw std::runtime_error( oss.str() );
+   }
+   else
+diff --git a/__RUN_SALOME__/LaunchingScripts/CMakeLists.txt b/__RUN_SALOME__/LaunchingScripts/CMakeLists.txt
+index 1fcaa9b..2b424cc 100644
+--- a/__RUN_SALOME__/LaunchingScripts/CMakeLists.txt
++++ b/__RUN_SALOME__/LaunchingScripts/CMakeLists.txt
+@@ -59,7 +59,15 @@ INSTALL(PROGRAMS ${SCRIPTS}
+         DESTINATION ${RUN_SALOME_SCRIPTS})
+ INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/.bashrc DESTINATION ${ABS_APPLI_PATH})
+ 
+-IF( (NOT DEFINED $ENV{PYTHON_ROOT_DIR}) AND (NOT DEFINED $ENV{PYTHON_INSTALL_DIR}) AND (NOT DEFINED $ENV{PYTHONHOME}) )
++IF(APPLE)
++  # /usr/bin/python3 on macOS is the Xcode CLT shim, not the interpreter used
++  # to build SALOME: point to the Python found at configure time instead.
++  IF( (NOT DEFINED ENV{PYTHON_ROOT_DIR}) AND (NOT DEFINED ENV{PYTHON_INSTALL_DIR}) AND (NOT DEFINED ENV{PYTHONHOME}) )
++    INSTALL(CODE "
++    EXECUTE_PROCESS(COMMAND ln -sf ${PYTHON_EXECUTABLE} python WORKING_DIRECTORY \${CMAKE_INSTALL_PREFIX}/${RUN_SALOME_SCRIPTS} )
++    ")
++  ENDIF()
++ELSEIF( (NOT DEFINED $ENV{PYTHON_ROOT_DIR}) AND (NOT DEFINED $ENV{PYTHON_INSTALL_DIR}) AND (NOT DEFINED $ENV{PYTHONHOME}) )
+   INSTALL(CODE "
+   EXECUTE_PROCESS(COMMAND ln -s /usr/bin/python3 python WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/${RUN_SALOME_SCRIPTS} )
+   ")
+diff --git a/__RUN_SALOME__/LaunchingScripts/nameserver.py b/__RUN_SALOME__/LaunchingScripts/nameserver.py
+index a4b4792..f9f5cd0 100644
+--- a/__RUN_SALOME__/LaunchingScripts/nameserver.py
++++ b/__RUN_SALOME__/LaunchingScripts/nameserver.py
+@@ -104,7 +104,7 @@ class NamingServer(Server):
+         if sys.platform == "win32":
+           env_ld_library_path = ['env', 'LD_LIBRARY_PATH=' + os.getenv("PATH")]
+         elif sys.platform == "darwin":
+-          env_ld_library_path = ['env', 'DYLD_LIBRARY_PATH=' + os.getenv("DYLD_LIBRARY_PATH"), 'DYLD_FALLBACK_LIBRARY_PATH=' + os.getenv("DYLD_FALLBACK_LIBRARY_PATH")]
++          env_ld_library_path = ['env', 'DYLD_LIBRARY_PATH=' + os.getenv("DYLD_LIBRARY_PATH", ""), 'DYLD_FALLBACK_LIBRARY_PATH=' + os.getenv("DYLD_FALLBACK_LIBRARY_PATH", "")]
+         else:
+           env_ld_library_path = ['env', 'LD_LIBRARY_PATH=' + os.getenv("LD_LIBRARY_PATH")]
+         self.CMD = ['xterm', '-e']+ env_ld_library_path + ['python']
+diff --git a/__RUN_SALOME__/LaunchingScripts/runSalomeCommon.py b/__RUN_SALOME__/LaunchingScripts/runSalomeCommon.py
+index 6033575..6aeac44 100755
+--- a/__RUN_SALOME__/LaunchingScripts/runSalomeCommon.py
++++ b/__RUN_SALOME__/LaunchingScripts/runSalomeCommon.py
+@@ -52,7 +52,7 @@ class InterpServer(Server):
+         if sys.platform == "win32":
+           self.CMD=['cmd', '/c', 'start cmd.exe', '/K', 'python']
+         elif sys.platform == "darwin":
+-          env_ld_library_path=['env', 'DYLD_LIBRARY_PATH=' + os.getenv("LD_LIBRARY_PATH")]
++          env_ld_library_path=['env', 'DYLD_LIBRARY_PATH=' + os.getenv("DYLD_LIBRARY_PATH", "")]
+           self.CMD=['xterm', '-e'] + env_ld_library_path + ['python']
+         else:
+           env_ld_library_path=['env', 'LD_LIBRARY_PATH=' + os.getenv("LD_LIBRARY_PATH")]
+diff --git a/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.cxx b/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.cxx
+index 24408cc..1cd5230 100644
+--- a/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.cxx
++++ b/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.cxx
+@@ -36,13 +36,15 @@
+ // Class attributes initialisation, for class method BaseTraceCollector::run
+ 
+ BaseTraceCollector* BaseTraceCollector::_singleton = 0;
+-#ifndef WIN32
+-pthread_mutex_t BaseTraceCollector::_singletonMutex;
+-#else
++// A zero-filled pthread_mutex_t is a valid unlocked mutex with glibc, but not
++// on macOS (the structure carries a signature): always use the initializer.
+ pthread_mutex_t BaseTraceCollector::_singletonMutex =
+   PTHREAD_MUTEX_INITIALIZER;
+-#endif
++#ifdef __APPLE__
++dispatch_semaphore_t BaseTraceCollector::_sem = 0;
++#else
+ sem_t BaseTraceCollector::_sem;
++#endif
+ int BaseTraceCollector::_threadToClose = 0;
+ pthread_t* BaseTraceCollector::_threadId = 0; // used to control single run
+ 
+diff --git a/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.hxx b/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.hxx
+index 39eef65..21dee28 100644
+--- a/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.hxx
++++ b/__RUN_SALOME__/SALOMELocalTrace/BaseTraceCollector.hxx
+@@ -32,6 +32,10 @@
+ 
+ #include <pthread.h>
+ #include <semaphore.h>
++#ifdef __APPLE__
++// Unnamed POSIX semaphores (sem_init) are not implemented on macOS
++#include <dispatch/dispatch.h>
++#endif
+ 
+ //! See derived Classes in SALOMELocalTrace for usage without CORBA,
+ //! see derived Classes in SALOMETraceCollector for usage with CORBA.
+@@ -48,7 +52,40 @@ class SALOMELOCALTRACE_EXPORT BaseTraceCollector
+   static BaseTraceCollector* _singleton;
+   static pthread_mutex_t _singletonMutex;
+   static pthread_t* _threadId;
++#ifdef __APPLE__
++  static dispatch_semaphore_t _sem;
++#else
+   static sem_t _sem;
++#endif
++
++  // Portable helpers for the "wait until the trace thread is started"
++  // handshake. Derived collectors (including SALOMETraceCollector in KERNEL)
++  // should use them instead of calling sem_init/sem_wait/sem_post on _sem.
++  static void InitStartSemaphore()
++  {
++#ifdef __APPLE__
++    if (!_sem)
++      _sem = dispatch_semaphore_create(0);
++#else
++    sem_init(&_sem, 0, 0);
++#endif
++  }
++  static void WaitStartSemaphore()
++  {
++#ifdef __APPLE__
++    dispatch_semaphore_wait(_sem, DISPATCH_TIME_FOREVER);
++#else
++    sem_wait(&_sem);
++#endif
++  }
++  static void PostStartSemaphore()
++  {
++#ifdef __APPLE__
++    dispatch_semaphore_signal(_sem);
++#else
++    sem_post(&_sem);
++#endif
++  }
+ };
+ 
+ #endif
+diff --git a/__RUN_SALOME__/SALOMELocalTrace/FileTraceCollector.cxx b/__RUN_SALOME__/SALOMELocalTrace/FileTraceCollector.cxx
+index f1424c8..0b023e9 100644
+--- a/__RUN_SALOME__/SALOMELocalTrace/FileTraceCollector.cxx
++++ b/__RUN_SALOME__/SALOMELocalTrace/FileTraceCollector.cxx
+@@ -60,12 +60,12 @@ BaseTraceCollector* FileTraceCollector::instance(const char *fileName)
+           _fileName = fileName;
+           DEVTRACE(" _fileName: " << _fileName);
+ 
+-          sem_init(&_sem,0,0); // to wait until run thread is initialized
++          InitStartSemaphore(); // to wait until run thread is initialized
+           pthread_t traceThread;
+           int bid = 0;
+           pthread_create(&traceThread, NULL,
+                                    FileTraceCollector::run, &bid);
+-          sem_wait(&_sem);
++          WaitStartSemaphore();
+           _singleton = myInstance; // _singleton known only when init done
+           DEVTRACE("FileTraceCollector:: instance()-end");
+         }
+@@ -90,7 +90,7 @@ void* FileTraceCollector::run(void* /*bid*/)
+   //DEVTRACE("init run");
+   _threadId = new pthread_t;
+   *_threadId = pthread_self();
+-  sem_post(&_sem); // unlock instance
++  PostStartSemaphore(); // unlock instance
+ 
+   LocalTraceBufferPool* myTraceBuffer = LocalTraceBufferPool::instance();
+   LocalTrace_TraceInfo myTrace;
+diff --git a/__RUN_SALOME__/SALOMELocalTrace/LocalTraceCollector.cxx b/__RUN_SALOME__/SALOMELocalTrace/LocalTraceCollector.cxx
+index 1b6aa20..675ee35 100644
+--- a/__RUN_SALOME__/SALOMELocalTrace/LocalTraceCollector.cxx
++++ b/__RUN_SALOME__/SALOMELocalTrace/LocalTraceCollector.cxx
+@@ -54,11 +54,11 @@ BaseTraceCollector* LocalTraceCollector::instance()
+         {                                      // the lock after the first test
+           BaseTraceCollector* myInstance = new LocalTraceCollector();
+ 
+-          sem_init(&_sem,0,0); // to wait until run thread is initialized
++          InitStartSemaphore(); // to wait until run thread is initialized
+           pthread_t traceThread;
+           pthread_create(&traceThread, NULL,
+                                    LocalTraceCollector::run, NULL);
+-          sem_wait(&_sem);
++          WaitStartSemaphore();
+           _singleton = myInstance; // _singleton known only when init done
+         }
+       pthread_mutex_unlock(&_singletonMutex); // release lock
+@@ -81,7 +81,7 @@ void* LocalTraceCollector::run(void* /*bid*/)
+ {
+   _threadId = new pthread_t;
+   *_threadId = pthread_self();
+-  sem_post(&_sem); // unlock instance
++  PostStartSemaphore(); // unlock instance
+ 
+   LocalTraceBufferPool* myTraceBuffer = LocalTraceBufferPool::instance();
+   LocalTrace_TraceInfo myTrace;
+diff --git a/__RUN_SALOME__/SALOMELocalTrace/Test/CMakeLists.txt b/__RUN_SALOME__/SALOMELocalTrace/Test/CMakeLists.txt
+index 21a39d7..47e3fd8 100644
+--- a/__RUN_SALOME__/SALOMELocalTrace/Test/CMakeLists.txt
++++ b/__RUN_SALOME__/SALOMELocalTrace/Test/CMakeLists.txt
+@@ -35,6 +35,11 @@ INSTALL(TARGETS SALOMELocalTraceTest EXPORT ${PROJECT_NAME}TargetGroup DESTINATI
+ ADD_EXECUTABLE(TestSALOMELocalTrace TestSALOMELocalTrace.cxx)
+ TARGET_LINK_LIBRARIES(TestSALOMELocalTrace SALOMELocalTraceTest SALOMELocalTrace SALOMEBasics ${CPPUNIT_LIBRARIES} ${PLATFORM_LIBS})
+ INSTALL(TARGETS TestSALOMELocalTrace DESTINATION ${LOCAL_TEST_DIR})
++IF(APPLE)
++  FILE(RELATIVE_PATH _rel_libs_path "${CMAKE_INSTALL_PREFIX}/${LOCAL_TEST_DIR}"
++                                    "${CMAKE_INSTALL_PREFIX}/${BOOTSTRAP_INSTALL_LIBS}")
++  SET_PROPERTY(TARGET TestSALOMELocalTrace APPEND PROPERTY INSTALL_RPATH "@loader_path/${_rel_libs_path}")
++ENDIF()
+ 
+ # Executable scripts to be installed
+ INSTALL(FILES TestSALOMELocalTrace.py DESTINATION ${LOCAL_TEST_DIR})
+diff --git a/salome b/salome
+index b508b86..7cbfa15 100755
+--- a/salome
++++ b/salome
+@@ -53,7 +53,8 @@ def _showDoc(modules):
+         if not os.path.isfile(docfile):
+           docfile = os.path.join(baseDir, "dev", module.upper(), "index.html")
+         if os.path.isfile(docfile):
+-          out, err = subprocess.Popen(["xdg-open", docfile]).communicate()
++          opener = "open" if sys.platform == "darwin" else "xdg-open"
++          out, err = subprocess.Popen([opener, docfile]).communicate()
+         else:
+           print("Online documentation is not accessible for module:", module)
+       else:
+-- 
+2.43.0
+
