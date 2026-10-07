@@ -39,3 +39,8 @@ default :
         has_unit_tests : "yes"
     }
 }
+
+version_V9_16_0_macOS:
+{
+    patches : [ 'SHAPERSTUDY-V9.16.0-cmake-macOS.patch' ]
+}

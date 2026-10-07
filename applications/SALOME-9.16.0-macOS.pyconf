@@ -221,7 +221,7 @@ APPLICATION :
         'SALOME'
         'SHAPER': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         #'dxf_shaper_plugin'
-        'SHAPERSTUDY'
+        'SHAPERSTUDY' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'RESTRICTED'
         'LIBBATCH' : {tag:'V2_6_1', base: 'no', section: 'version_V2_6_1_macOS'}
         'KERNEL' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
