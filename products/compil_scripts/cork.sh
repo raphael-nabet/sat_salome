@@ -8,6 +8,16 @@ rm -rf $BUILD_DIR
 mkdir $BUILD_DIR
 cd $BUILD_DIR
 cp -r $SOURCE_DIR/* .
+
+if [ "$DIST_NAME" = macOS ]; then
+    export SDKROOT=$(xcrun --show-sdk-path)
+    export CXXFLAGS="$CXXFLAGS -I${MMG_ROOT_DIR}/include"
+    export LDFLAGS="$LDFLAGS -L${MMG_ROOT_DIR}/lib -lgmp"
+    export C_INCLUDE_PATH="${MMG_ROOT_DIR}/include:$C_INCLUDE_PATH"
+    export CPLUS_INCLUDE_PATH="${MMG_ROOT_DIR}/include:$CPLUS_INCLUDE_PATH"
+    export LIBRARY_PATH="${MMG_ROOT_DIR}/lib:$LIBRARY_PATH"
+fi
+
 echo
 echo "*** make" $MAKE_OPTIONS
 make $MAKE_OPTIONS
