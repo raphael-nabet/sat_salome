@@ -43,6 +43,17 @@ default :
     patches : []
 }
 
+default_macOS :
+{
+    depend : [
+              'KERNEL',
+              'GUI',
+              'PERSALYS',
+              'YACS',
+              'openturns'
+              ]
+}
+
 default_win :
 {
     name : "OPENTURNS"

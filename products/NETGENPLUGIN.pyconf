@@ -81,7 +81,7 @@ default_win :
 
 version_V9_16_0_macOS :
 {
-    patches : [ "NETGENPlugin-V9.16.0-macOS.patch" ]
+    patches : [ "NETGENPlugin-V9.16.0-macOS.patch", "NETGENPLUGIN.macos.arm64.patch" ]
 }
 
 version_V9_3_0 :

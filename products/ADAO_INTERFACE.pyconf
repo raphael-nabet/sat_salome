@@ -28,11 +28,17 @@ default :
     build_dir : $APPLICATION.workdir + $VARS.sep + 'BUILD' + $VARS.sep + $name
     properties:
     {
+        incremental : "yes"
         has_salome_gui : "yes"
         is_SALOME_module : "yes"
         is_SALOME_product: "yes"
     }
     patches : []
+}
+
+default_macOS:
+{
+    patches : [ "ADAO_INTERFACE.macos.arm64.patch" ]
 }
 
 default_FD44 :

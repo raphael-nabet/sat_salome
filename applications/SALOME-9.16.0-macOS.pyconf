@@ -85,7 +85,7 @@ APPLICATION :
         libigl : {tag:'v2.5.0', base: 'no', section: 'version_v2_5_0_macOS' }
         mpc : 'native'
         gmp : 'native'
-        mmg : '5.6.0'
+        mmg : {tag:'5.6.0', base: 'no', section: 'version_5_6_0_macOS' }
         mpfr : 'native'
         #gdal : '3.7.1'
         gmsh : '4.14.1'
@@ -110,8 +110,8 @@ APPLICATION :
         mcut : 'b5b0ec6'
         mdurl: '0.1.2'
         medfile : {tag: '6.0.1' , base: 'no', section : 'version_6_0_1_macOS'}
-        mesa : '19.0.8'
-        MeshGems : '2.15-1'
+        mesa : {tag: '19.0.8' , base: 'no', section : 'version_19_0_8_macOS'}
+        #MeshGems : '2.15-1'
         meshio : {tag: '5.3.5' , base: 'no', section : 'version_5_3_5_no_pip'}
         meson: '1.9.1'
         meson_python: '0.14.0'
@@ -126,9 +126,9 @@ APPLICATION :
         nose: '1.3.7'
         numpy : '1.22.2'
         numpydoc : '1.6.0'
-        omniORB : '4.2.5'
+        omniORB : {tag:'4.2.5', base: 'no', section: 'version_4_2_5_macOS' }
         omniORBpy : '4.2.5'
-##        ONNX: '1.22.0'
+        #ONNX: '1.22.0'
         openblas: '0.3.29'
         opencv : {tag:'3.2.0', base: 'no', section: 'version_3_2_0_macOS' }
         openmpi : '5.0.10'
@@ -141,7 +141,7 @@ APPLICATION :
         patsy : '0.5.4'
         ParaView : {tag:'6.0.0.c61dcc8ee0', base: 'no',  section: 'version_6_0_0_MPI', hpc:'yes'}
         paramiko : '4.0.0'
-#        PERSALYS: 'v19.0'
+        PERSALYS: 'v19.0'
         petsc : '3.24.3'
         Pillow : {tag:'8.4.0', base: 'no', section: 'version_8_4_0_macOS' }
         planegcs : '0.18-3cb6890'
@@ -207,10 +207,10 @@ APPLICATION :
         toml: '0.10.2'
         tqdm : '4.66.5'
         tomli : '2.0.1'
-        TTK : '1.3.0'
+        #TTK : '1.3.0'
         typing_extensions : '4.13.2'
         urllib3 : '1.23'
-#        zeromq: '4.3.1'
+        #zeromq: '4.3.1'
         zipp : '3.17.0'
         URANIE : '4.8.0'
         wheel : '0.36.2'
@@ -231,10 +231,10 @@ APPLICATION :
         'GEOM'
         'SMESH' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'NETGENPLUGIN': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
-        'BLSURFPLUGIN'
-        'GHS3DPLUGIN'
-        'HYBRIDPLUGIN'
-        'HexoticPLUGIN'
+        #'BLSURFPLUGIN'
+        #'GHS3DPLUGIN'
+        #'HYBRIDPLUGIN'
+        #'HexoticPLUGIN'
         'GMSHPLUGIN': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'HEXABLOCK'
         'HEXABLOCKPLUGIN'
@@ -242,7 +242,7 @@ APPLICATION :
         'mmgplugin'
         'HOMARD'
         'FIELDS'
-        'PARAVIS': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0'} #FIXME
+        'PARAVIS': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'JOBMANAGER'
         'YACS'
         'YACSGEN'
@@ -259,7 +259,7 @@ APPLICATION :
         'ADAO'
         'ADAO_INTERFACE'
         'PARAVISADDONS'
-#        'OPENTURNS_SALOME'
+        'OPENTURNS_SALOME'
         'YDEFX'
         'pmml'
         'pybatch' : '65f6e083'

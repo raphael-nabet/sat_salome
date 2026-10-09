@@ -58,6 +58,11 @@ default :
     }
 }
 
+default_macOS :
+{
+    patches : ["PARAVISADDONS.macos.arm64.patch"]
+}
+
 default_win :
 {
     # bos #46196 - make the build directory as short as possible since

@@ -30,7 +30,7 @@ default :
 
 default_macOS:
 {
-    patches : [ "SALOMEBOOTSTRAP-macOS.patch" ]
+    patches : [ "SALOMEBOOTSTRAP-macOS.patch"]
 }
 
 default_win:

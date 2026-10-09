@@ -49,7 +49,7 @@ default_win:
 
 version_V9_16_0_macOS :
 {
-    patches : [ "GMSHPLUGIN-macOS.patch" ]
+    patches : [ "GMSHPLUGIN-macOS.patch", "GMSHPLUGIN.macos.arm64.patch" ]
 }
 
 version_8_1_0_to_9_1_0 :

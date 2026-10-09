@@ -37,3 +37,8 @@ default :
        is_SALOME_product: "yes"
     }
 }
+
+default_macOS :
+{
+    patches : ["COMPONENT.macos.arm64.patch"]
+}

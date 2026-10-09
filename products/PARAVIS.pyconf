@@ -60,6 +60,12 @@ default :
     patches : []
 }
 
+default_macOS:
+{
+    patches : ["PARAVIS.macos.arm64.patch"]
+    cmake_options : " -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include"
+}
+
 default_win:
 {
     cmake_options : "-DSALOME_PARAVIS_USE_GEOM_SOURCE=ON -DSALOME_PARAVIS_USE_SMESH_SOURCE=ON -DBUILD_TESTING=ON"
@@ -194,6 +200,28 @@ version_V10_0_0_MPI :
                      'git submodule update --init --remote',
                      'cd src/Plugins/MEDReader',
                      'git checkout V10_0_0a2' #FIXME
+                    ]
+    }
+}
+
+version_V9_16_0_macOS :
+{
+    cmake_options : "-DSALOME_PARAVIS_USE_GEOM_SOURCE=ON -DSALOME_PARAVIS_USE_SMESH_SOURCE=ON -DBUILD_TESTING=ON -DCMAKE_INSTALL_LIBDIR=lib -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include"
+    git_info:
+    {
+      repositories :
+      {
+        tuleap : $PROJECTS.projects.salome.git_info.git_server.tuleap.url + "salome/paravis.git"
+        github : $PROJECTS.projects.salome.git_info.git_server.github.url + "paravis.git"
+        gitpub : $PROJECTS.projects.salome.git_info.git_server.gitpub.url + "modules/paravis.git"
+      }
+      git_commands: [
+                     'git config -f .gitmodules submodule.src/Plugins/MEDReader.url ../medreader',
+                     'git config -f .git/config submodule.src/Plugins/MEDReader.url ../medreader',
+                     'git submodule sync',
+                     'git submodule update --init --remote',
+                     'cd src/Plugins/MEDReader',
+                     'git checkout V9_16_0' #FIXME
                     ]
     }
 }

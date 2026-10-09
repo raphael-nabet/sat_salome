@@ -512,7 +512,7 @@ version_V9_16_0_MPI_macOS :
               ]
     opt_depend : ["ParMetis", "metis", "BasicIterativeStatistics", "lapack", "openblas"]
 #    patches: ['medcoupling_use_openblas.patch', 'medcoupling-openblas-include_dir.patch', 'medcoupling_ParaMEDMEM_Swig_tests.patch', 'MEDCOUPLING-macOS-V9_16_0.p001.patch']
-    patches: ['MEDCOUPLING-macOS-V9_16_0.p001.patch']
+    patches: ['MEDCOUPLING-macOS-V9_16_0.p001.patch', 'MEDCOUPLING.macos.arm64.patch']
 }
 
 version_V9_16_0_MPI_DB11 :

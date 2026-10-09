@@ -1,0 +1,53 @@
+diff --git a/src/Launcher/SALOME_ExternalServerHandler.cxx b/src/Launcher/SALOME_ExternalServerHandler.cxx
+index 5770597f..994f5512 100644
+--- a/src/Launcher/SALOME_ExternalServerHandler.cxx
++++ b/src/Launcher/SALOME_ExternalServerHandler.cxx
+@@ -33,6 +33,9 @@
+ #include <sys/types.h>
+ #include <signal.h>
+ #endif
++#if defined(__APPLE__)
++#include <sys/sysctl.h>
++#endif
+ 
+ unsigned SALOME_ExternalServerHandler::CNT = 0;
+ 
+@@ -82,6 +85,25 @@ void SALOME_ExternalServerHandler::ping()
+       throw SALOME_LauncherException(oss2.str());
+     }
+   // check for a non zombie process
++#if defined(__APPLE__)
++  // macOS: no /proc file system, query the process state with sysctl
++  {
++    struct kinfo_proc info;
++    std::size_t len(sizeof(info));
++    int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PID, (int)_pid };
++    if( sysctl(mib,4,&info,&len,nullptr,0) != 0 || len == 0 )
++      {
++        std::ostringstream oss2; oss2 << "SALOME_ExternalServerHandler::ping : Fail to ping server " << _name << "\" with pid = " << _pid << " during access of process state !";
++        throw SALOME_LauncherException(oss2.str());
++      }
++    if( info.kp_proc.p_stat == SZOMB )
++      {
++        std::ostringstream oss2; oss2 << "SALOME_ExternalServerHandler::ping : server " << _name << "\" with pid = " << _pid << " has been detected as a Zombie !";
++        throw SALOME_LauncherException(oss2.str());
++      }
++    return ;
++  }
++#endif
+   std::ostringstream statusFile;
+   statusFile << "/proc/" << _pid << "/status";
+   std::ifstream ifs(statusFile.str());
+@@ -123,7 +145,12 @@ SALOME::LongVec *SALOME_ExternalServerHandler::listOfChildrenPID()
+   const SALOME_CPythonHelper *pyh(_boss->getPyHelper());
+ #ifndef WIN32
+   std::ostringstream oss;
++#if defined(__APPLE__)
++  // macOS: BSD ps has no --ppid option
++  oss << "[int(elt) for elt in sp.check_output([\"pgrep\",\"-P\",\"" << _pid << "\"]).split()]";
++#else
+   oss << "[int(elt) for elt in sp.check_output([\"ps\",\"-o\",\"pid=\",\"--ppid\",\"" << _pid << "\"]).split()]";
++#endif
+   std::vector<long> pids(pyh->evalVL(oss.str()));
+   std::size_t sz(pids.size());
+   ret->length(sz);

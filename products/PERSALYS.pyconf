@@ -50,6 +50,34 @@ default :
     }
 }
 
+default_macOS :
+{
+    depend : ['Python',
+              'hdf5',
+              'cgns',
+              'tbb',
+              'nlopt',
+              'libxml2',
+              'eigen',
+              'netcdf',
+              'boost',
+              'ADAO',
+              'ADAO_INTERFACE',
+              'KERNEL',
+              'GUI',
+              'Sphinx',
+              'qwt',
+              'qt',
+              'ParaView',
+              'openturns',
+              'numpydoc',
+              'YACS',
+              'YDEFX',
+              'CAS',
+              'CONFIGURATION'
+           ]
+}
+
 default_win :
 {
     properties :

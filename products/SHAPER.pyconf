@@ -71,7 +71,7 @@ default_FD44 :
 
 version_V9_16_0_macOS :
 {
-    patches : ['SHAPER-V9.16.0-cmake-macOS.patch', 'SHAPER-V9.16.0-shared-lib-macOS.patch']
+    patches : ['SHAPER-V9.16.0-cmake-macOS.patch', 'SHAPER-V9.16.0-shared-lib-macOS.patch', 'SHAPER.macos.arm64.patch']
 }
 
 version_V9_16_0_FD44 :

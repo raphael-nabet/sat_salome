@@ -39,7 +39,7 @@ default_UB26_04:
 version_V9_16_0_macOS:
 {
   #patches: ['CONFIGURATION-macOS-V9_16_0.p001.patch','CONFIGURATION-macOS-V9_16_0.p002.patch']
-  patches: ['CONFIGURATION-macOS-V9_16_0.p003.patch']
+  patches: ['CONFIGURATION-macOS-V9_16_0.p003.patch', 'CONFIGURATION.macos.arm64.patch']
 }
 
 version_V9_16_0_UB26_04:

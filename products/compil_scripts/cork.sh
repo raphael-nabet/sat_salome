@@ -11,11 +11,12 @@ cp -r $SOURCE_DIR/* .
 
 if [ "$DIST_NAME" = macOS ]; then
     export SDKROOT=$(xcrun --show-sdk-path)
-    export CXXFLAGS="$CXXFLAGS -I${MMG_ROOT_DIR}/include"
-    export LDFLAGS="$LDFLAGS -L${MMG_ROOT_DIR}/lib -lgmp"
-    export C_INCLUDE_PATH="${MMG_ROOT_DIR}/include:$C_INCLUDE_PATH"
-    export CPLUS_INCLUDE_PATH="${MMG_ROOT_DIR}/include:$CPLUS_INCLUDE_PATH"
-    export LIBRARY_PATH="${MMG_ROOT_DIR}/lib:$LIBRARY_PATH"
+    GMP_PREFIX=$(brew --prefix gmp 2>/dev/null)
+    [ -f "$GMP_PREFIX/include/gmp.h" ] || GMP_PREFIX=/opt/homebrew
+    cat > makeConstants <<EOF
+GMP_INC_DIR = ${GMP_PREFIX}/include
+GMP_LIB_DIR = ${GMP_PREFIX}/lib
+EOF
 fi
 
 echo

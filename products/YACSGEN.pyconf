@@ -29,8 +29,13 @@ default :
        incremental : "yes"
        is_SALOME_product: "yes"
     }
-} 
- 
+}
+
+default_macOS :
+{
+    patches : ["YACSGEN.macos.arm64.patch"]
+}
+
 version_V7_8_BR :
 {
     compil_script : "YACSGEN.py"

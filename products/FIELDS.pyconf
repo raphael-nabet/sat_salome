@@ -34,6 +34,13 @@ default :
     }
 }
 
+default_macOS :
+{
+    patches : ["FIELDS.macos.arm64.patch"]
+    cmake_options : ' -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include -DCMAKE_C_FLAGS=" -w -Wno-narrowing -Wno-sign-conversion -isysroot $(xcrun --show-sdk-path)" -DCMAKE_CXX_FLAGS="-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION -D_LIBCPP_ENABLE_CXX17_REMOVED_UNEXPECTED_FUNCTIONS -w -Wno-narrowing -Wno-sign-conversion -isysroot $(xcrun --show-sdk-path)" -DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}'
+ 
+}
+
 default_MPI :
 {
     cmake_options : "-DSALOME_USE_MPI=ON -DMEDCOUPLING_USE_64BIT_IDS=ON"
