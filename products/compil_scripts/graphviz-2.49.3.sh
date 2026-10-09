@@ -53,5 +53,15 @@ then
     exit 3
 fi
 
+export PATH=$PRODUCT_INSTALL/bin:$PATH
+cd $PRODUCT_INSTALL/bin
+dot -c
+if [ $? -ne 0 ]
+then
+    echo "ERROR on configure dot -c"
+    exit 4
+fi
+
+
 echo
 echo "########## END"
