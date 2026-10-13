@@ -139,7 +139,7 @@ default_UB26_04:
 
 version_V9_16_0_macOS:
 {
-    patches: ['SMESH-V9.16.0-macOS.patch']
+    patches: ['SMESH-V9.16.0-macOS.patch', 'SMESH-V9.16.0-macOS-Data.patch']
 }
 
 version_V9_16_0_UB26_04:

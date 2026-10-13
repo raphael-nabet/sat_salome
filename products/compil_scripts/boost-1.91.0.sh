@@ -4,9 +4,10 @@ echo "##########################################################################
 echo "BOOST" $VERSION
 echo "##########################################################################"
 
-
-
-cd $SOURCE_DIR
+rm -rf $BUILD_DIR
+mkdir $BUILD_DIR
+cd  $BUILD_DIR
+cp $SOURCE_DIR/* .
 
 echo
 echo "*** bootstrap.sh"

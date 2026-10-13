@@ -62,8 +62,30 @@ default :
 
 default_macOS:
 {
-    patches : ["PARAVIS.macos.arm64.patch"]
-    cmake_options : " -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include"
+    patches : ["PARAVIS.macos.arm64.patch", "PARAVIS-macOS-cmake-doc.patch"]
+    cmake_options : ' -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include -DCMAKE_SHARED_LINKER_FLAGS="-L${FREEIMAGE_ROOT_DIR}/lib" -DCMAKE_MODULE_LINKER_FLAGS="-L${FREEIMAGE_ROOT_DIR}/lib" -DCMAKE_EXE_LINKER_FLAGS="-L${FREEIMAGE_ROOT_DIR}/lib" -DDOXYGEN_DOT_EXECUTABLE="${GRAPHVIZ_ROOT_DIR}/bin/dot"'
+    depend : [
+       "KERNEL",
+       "GUI",
+       "MEDCOUPLING",
+       "FIELDS",
+       "GEOM",
+       "SMESH",
+       "Python",
+       "qt",
+       "boost",
+       "hdf5",
+       "medfile",
+       "ParaView",
+       "CAS",
+       "omniORB",
+       "docutils",
+       "libxml2",
+       "six",
+       "pytz",
+       "graphviz",
+       "freeimage"
+    ]
 }
 
 default_win:
@@ -206,7 +228,7 @@ version_V10_0_0_MPI :
 
 version_V9_16_0_macOS :
 {
-    cmake_options : "-DSALOME_PARAVIS_USE_GEOM_SOURCE=ON -DSALOME_PARAVIS_USE_SMESH_SOURCE=ON -DBUILD_TESTING=ON -DCMAKE_INSTALL_LIBDIR=lib -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include"
+    cmake_options : '-DSALOME_PARAVIS_USE_GEOM_SOURCE=ON -DSALOME_PARAVIS_USE_SMESH_SOURCE=ON -DBUILD_TESTING=ON -DCMAKE_INSTALL_LIBDIR=lib -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include -DCMAKE_SHARED_LINKER_FLAGS="-L${FREEIMAGE_ROOT_DIR}/lib" -DCMAKE_MODULE_LINKER_FLAGS="-L${FREEIMAGE_ROOT_DIR}/lib" -DCMAKE_EXE_LINKER_FLAGS="-L${FREEIMAGE_ROOT_DIR}/lib" -DDOXYGEN_DOT_EXECUTABLE="${GRAPHVIZ_ROOT_DIR}/bin/dot"'
     git_info:
     {
       repositories :

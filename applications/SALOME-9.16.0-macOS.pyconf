@@ -8,7 +8,7 @@ APPLICATION :
     tag        : 'V9_16_0'
     dev        : 'no'
     verbose    : 'no'
-    cmake_build_type: 'Debug' # Debug, RelWithDebInfo, Release, MinSizeRel
+    cmake_build_type: 'Release' # Debug, RelWithDebInfo, Release, MinSizeRel
     rpath      : 'yes'
     debug      : 'no'
     base       : 'no'
@@ -26,6 +26,7 @@ APPLICATION :
            SALOME_GMSH_HEADERS_STD : '1'
            OMNIORBPY_REMOVE_INIT : '0'
            MACOSX_DEPLOYMENT_TARGET :'15.0'
+           MACOSX_BUILD_SDK :'26.5'
         }
         launch :
         {
@@ -47,6 +48,7 @@ APPLICATION :
         beniget : '0.4.0'
         bison : 'native'
         boost : '1.91.0'
+        cairo : '1.16.0'
         CAS : {tag : 'SALOME_9_16_V7_9_0b2', section: 'version_SALOME_9_16_V7_9_0b2', base:  'no'}
         catalyst: {tag: '2.0', section: 'version_v2_0_0', base: 'no'}
         C3PO: 'v2.3'
@@ -83,6 +85,8 @@ APPLICATION :
         hwloc : '2.14.0'
         libevent : '2.1.13'
         libigl : {tag:'v2.5.0', base: 'no', section: 'version_v2_5_0_macOS' }
+        libjpeg : 'v10'
+        libpng: '1.5.10'
         mpc : 'native'
         gmp : 'native'
         mmg : {tag:'5.6.0', base: 'no', section: 'version_5_6_0_macOS' }
@@ -144,6 +148,7 @@ APPLICATION :
         PERSALYS: 'v19.0'
         petsc : '3.24.3'
         Pillow : {tag:'8.4.0', base: 'no', section: 'version_8_4_0_macOS' }
+        pixman : '0.42.2'
         planegcs : '0.18-3cb6890'
         ply : '3.8'
         pmix : '5.0.11'
@@ -176,7 +181,7 @@ APPLICATION :
         requests : '2.31.0'
         rich : '13.7.1'
         rkCommon : '1.11.0'
-        root: '6.28.10'
+        root: {tag: '6.32.16',   base: 'no', section: 'version_6_32_16_macOS'}
         salome_system : 'native'
         scipy : {tag: '1.11.4',   base: 'no', section: 'version_1_11_4_macOS'}
         scikit_learn : '1.2.2' #1.0
