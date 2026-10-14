@@ -67,7 +67,7 @@ APPLICATION :
         cppunit : '1.13.2'
         cryptography : '46.0.3'
         cycler : '0.10.0'
-        Cython : '0.29.37'
+        Cython : '3.0.12'
         dateutil : '2.8.1'
         decorator : '5.1.0'
         dill : '0.3.4'
@@ -181,7 +181,7 @@ APPLICATION :
         requests : '2.31.0'
         rich : '13.7.1'
         rkCommon : '1.11.0'
-        root: {tag: '6.32.16',   base: 'no', section: 'version_6_32_16_macOS'}
+        root: {tag: '6.40.02',   base: 'no', section: 'version_6_40_02_macOS'}
         salome_system : 'native'
         scipy : {tag: '1.11.4',   base: 'no', section: 'version_1_11_4_macOS'}
         scikit_learn : '1.2.2' #1.0
@@ -217,7 +217,7 @@ APPLICATION :
         urllib3 : '1.23'
         #zeromq: '4.3.1'
         zipp : '3.17.0'
-        URANIE : '4.8.0'
+        URANIE : {tag:'4.8.0', base: 'no', section: 'version_4_8_0_macOS'}
         wheel : '0.36.2'
         #xarray: '2023.12.0'
 

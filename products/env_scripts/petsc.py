@@ -14,7 +14,7 @@ def set_env(env, prereq_dir, version):
     if platform.system() == "Windows" :
         pass
     elif platform.system() == "Darwin" :
-        env.set('PETSC_ARCH', 'arch-linux-c-opt')
+        env.set('PETSC_ARCH', 'arch-darwin-c-opt')
         env.prepend('DYLD_LIBRARY_PATH', os.path.join(prereq_dir, 'lib'))
         # Setting pythonpath for libraries petsc4py and slepc4py
         petsc4y=env.get('PETSC4PY')

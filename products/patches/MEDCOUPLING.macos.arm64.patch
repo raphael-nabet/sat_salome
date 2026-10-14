@@ -83,3 +83,24 @@ index 2eb2e2e7..cd2e00f2 100644
      execName += "/../../MEDPartitioner/medpartitioner_para";
      if (!std::ifstream(execName.c_str()))
          CPPUNIT_FAIL("Can't find medpartitioner_para, please set MEDCOUPLING_ROOT_DIR");
+diff --git a/src/INTERP_KERNEL/Bases/InterpKernelHashTable.hxx b/src/INTERP_KERNEL/Bases/InterpKernelHashTable.hxx
+index 8a09e2b..71bc51d 100644
+--- a/src/INTERP_KERNEL/Bases/InterpKernelHashTable.hxx
++++ b/src/INTERP_KERNEL/Bases/InterpKernelHashTable.hxx
+@@ -371,13 +371,13 @@ class hashtable
+     template <class _InputIterator>
+     void insert_unique(_InputIterator __f, _InputIterator __l)
+     {
+-        insert_unique(__f, __l, __iterator_category(__f));
++        insert_unique(__f, __l, typename std::iterator_traits<_InputIterator>::iterator_category());
+     }
+ 
+     template <class _InputIterator>
+     void insert_equal(_InputIterator __f, _InputIterator __l)
+     {
+-        insert_equal(__f, __l, __iterator_category(__f));
++        insert_equal(__f, __l, typename std::iterator_traits<_InputIterator>::iterator_category());
+     }
+ 
+     template <class _InputIterator>
+ 
