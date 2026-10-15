@@ -156,6 +156,48 @@ index 7f58f86..c0e0731 100755
  endif (CDMATH_WITH_PETSC) 
  
  INSTALL(TARGETS TestMesh DESTINATION bin/unit_tests)
+diff --git a/CoreFlows/Models/src/IsothermalSinglePhase.cxx b/CoreFlows/Models/src/IsothermalSinglePhase.cxx
+index c4d6420..ac0dc01 100755
+--- a/CoreFlows/Models/src/IsothermalSinglePhase.cxx
++++ b/CoreFlows/Models/src/IsothermalSinglePhase.cxx
+@@ -4,7 +4,14 @@
+  *  Created on: July 7 2022
+  */
+ 
+-#include<bits/stdc++.h>
++#include <algorithm>
++#include <cassert>
++#include <cmath>
++#include <cstdlib>
++#include <iostream>
++#include <map>
++#include <string>
++#include <vector>
+ #include "IsothermalSinglePhase.hxx"
+ 
+ using namespace std;
+diff --git a/CoreFlows/Models/src/StationaryDiffusionEquation.cxx b/CoreFlows/Models/src/StationaryDiffusionEquation.cxx
+index 85416d8..e470638 100755
+--- a/CoreFlows/Models/src/StationaryDiffusionEquation.cxx
++++ b/CoreFlows/Models/src/StationaryDiffusionEquation.cxx
+@@ -1296,7 +1296,7 @@ void StationaryDiffusionEquation::setDirichletBoundaryCondition(string groupName
+ 
+     int nBoundaryCells = dirichletBoundaryUMesh->getNumberOfCells();//Boundary cells that support the boundary field (subpart of the total boundary)
+     std::map<int,double>::iterator it;
+-    long int iCell_global;
++    mcIdType iCell_global;
+     if(!_FECalculation)//Finite volume simulation
+         for(int i=0; i<nBoundaryCells ; i++)
+         {
+@@ -1305,7 +1305,7 @@ void StationaryDiffusionEquation::setDirichletBoundaryCondition(string groupName
+             if( it == _dirichletBoundaryValues.end() )//Aucune valeur limite n'est associée au noeud
+                 it->second = bc_field[i];
+         }
+-    long int inode_global, length;
++    mcIdType inode_global;
+     if(_FECalculation)
+     {
+         const MEDCoupling::DataArrayIdType *globalNodeId  = dirichletBoundaryUMesh->computeFetchedNodeIds();
 diff --git a/CoreFlows/examples/CMakeLists.txt b/CoreFlows/examples/CMakeLists.txt
 index 8c1c87b..286d4f5 100755
 --- a/CoreFlows/examples/CMakeLists.txt
