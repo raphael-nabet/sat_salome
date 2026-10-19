@@ -42,6 +42,7 @@ APPLICATION :
     {
         # PREREQUISITES :
         alabaster : '0.7.6'
+        assimulo  : '3.5.2'
         Babel : '2.14.0'
         BasicIterativeStatistics :  'v0.1.0'
         bcrypt : '5.0.0'
@@ -128,6 +129,7 @@ APPLICATION :
         nlopt : '2.7.0'
         networkx : '2.5'
         nose: '1.3.7'
+        nose_py3: {tag:'1.6.9', base: 'no', section: 'version_1_6_9_no_pip' }
         numpy : '1.22.2'
         numpydoc : '1.6.0'
         omniORB : {tag:'4.2.5', base: 'no', section: 'version_4_2_5_macOS' }
@@ -161,7 +163,7 @@ APPLICATION :
         pynacl : '1.6.2'
         pythran : '0.14.0'
         psutil : '5.9.8'
-        PyFMI : {tag: '2.6',   base: 'no', section: 'version_2_6_no_pip'}
+        PyFMI : {tag: '2.13.1',   base: 'no', section: 'version_2_13_1_macOS'}
         Pygments : '2.17.2'
         pyparsing : '3.1.1'
         pyproject_metadata: '0.8.0'
