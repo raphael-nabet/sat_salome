@@ -7,7 +7,7 @@ echo "##########################################################################
 rm -rf $BUILD_DIR
 mkdir $BUILD_DIR
 cd  $BUILD_DIR
-cp $SOURCE_DIR/* .
+cp -r $SOURCE_DIR/* .
 
 echo
 echo "*** bootstrap.sh"
@@ -30,4 +30,3 @@ fi
 
 echo
 echo "########## END"
-
