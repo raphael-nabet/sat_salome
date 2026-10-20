@@ -195,6 +195,10 @@ then
     exit 1
 fi
 
+if [ "$DIST_NAME" = "macOS" ]; then
+    CMAKE_OPTIONS+=" $SAT_CMAKE_OPTIONS"
+fi
+
 echo
 echo "*** make" $MAKE_OPTIONS
 make $MAKE_OPTIONS

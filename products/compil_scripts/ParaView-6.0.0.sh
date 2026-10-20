@@ -8,9 +8,7 @@ LINUX_DISTRIBUTION="$DIST_NAME$DIST_VERSION"
 
 if [ "$DIST_NAME" == "macOS" ]; then
     libExtension="dylib"
-    export SDKROOT="$(xcrun --show-sdk-path)"
-    export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
-    export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+    CMAKE_OPTIONS+=" $SAT_CMAKE_OPTIONS"
 else
     libExtension="so"
 fi
@@ -34,6 +32,10 @@ CMAKE_OPTIONS+=" -DCMAKE_INSTALL_LIBDIR:STRING=lib"
 CMAKE_OPTIONS+=" -DBUILD_TESTING:BOOL=OFF"
 CMAKE_OPTIONS+=" -DPARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=ON"
 CMAKE_OPTIONS+=" -DPARAVIEW_VERSIONED_INSTALL=OFF"
+CMAKE_OPTIONS+=" -DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath,${MPI_ROOT_DIR}"
+CMAKE_OPTIONS+=" -DCMAKE_SHARED_LINKER_FLAGS=-Wl,-rpath,${MPI_ROOT_DIR}"
+CMAKE_OPTIONS+=" -DCMAKE_MODULE_LINKER_FLAGS=-Wl,-rpath,${MPI_ROOT_DIR}"
+
 ### OpenGL settings
 CMAKE_OPTIONS+=" -DOpenGL_GL_PREFERENCE:STRING=LEGACY"
 

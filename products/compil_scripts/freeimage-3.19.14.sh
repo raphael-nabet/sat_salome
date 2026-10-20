@@ -21,9 +21,10 @@ if [ $DIST_NAME = "macOS" ]; then
     for file in $(grep -ril "fvisibility" .); do
         sed -i '' -e "s/-fvisibility=hidden//g" "$file"
     done
+    CMAKE_OPTIONS+=" ${SAT_CMAKE_OPTIONS}"
 fi
 
-echo "*** cmake" $CMAKE_OPTIONS
+echo "*** cmake $CMAKE_OPTIONS"
 cmake $CMAKE_OPTIONS $SOURCE_DIR
 
 if [ $? -ne 0 ]
@@ -52,4 +53,3 @@ fi
 
 echo
 echo "########## END"
-

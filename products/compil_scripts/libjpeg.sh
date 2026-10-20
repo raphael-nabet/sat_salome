@@ -10,9 +10,14 @@ cd  $BUILD_DIR
 
 CONFIGURE_OPTIONS=" --prefix=$PRODUCT_INSTALL"
 
+opts=()
+if [ "$DIST_NAME" = "macOS" ]; then
+    eval "opts=($SAT_CONFIGURE_OPTIONS)"
+fi
+
 echo
-echo "*** configure"
-$SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL
+echo "*** configure $CONFIGURE_OPTIONS ${opts[@]}"
+$SOURCE_DIR/configure $CONFIGURE_OPTIONS "${opts[@]}"
 if [ $? -ne 0 ]
 then
     echo "ERROR on configure"

@@ -23,9 +23,15 @@ OPTS+=("pixman_LIBS=-L${PIXMAN_ROOT_DIR}/lib -lpixman-1")
 OPTS+=("--enable-ft=yes")
 OPTS+=("--enable-fc=no")
 
+opts_mac=()
+if [ "$DIST_NAME" = "macOS" ]; then
+    eval "opts_mac=($SAT_CONFIGURE_OPTIONS)"
+fi
+
 echo
 echo "*** configure"
-"$SOURCE_DIR/configure" "${OPTS[@]}"
+"$SOURCE_DIR/configure" "${OPTS[@]}" "${opts_mac[@]}"
+
 
 if [ $? -ne 0 ]
 then

@@ -57,7 +57,7 @@ fi
 if [ "$DIST_NAME" = "macOS" ]; then
     export CFLAGS="-flax-vector-conversions -Wno-implicit-function-declaration"
     export CXXFLAGS="-flax-vector-conversions"
-
+    CMAKE_OPTIONS+=" $SAT_CMAKE_OPTIONS"
     CMAKE_OPTIONS+=" -DWITH_WEBP=OFF"
     CMAKE_OPTIONS+=" -DBUILD_ZLIB=OFF"
     CMAKE_OPTIONS+=" -DBUILD_PNG=OFF -DCV_DISABLE_OPTIMIZATION=ON"

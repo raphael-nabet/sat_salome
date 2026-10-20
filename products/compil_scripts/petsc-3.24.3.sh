@@ -125,8 +125,13 @@ else
 fi
 CONFIGURE_FLAGS+=" --PETSC_DIR=${BUILD_DIR}"
 
+opts=()
+if [ "$DIST_NAME" = "macOS" ]; then
+    eval "opts=($SAT_CONFIGURE_OPTIONS)"
+fi
+
 echo "*** configure --prefix=${PRODUCT_INSTALL} ${CONFIGURE_FLAGS}"
-./configure --prefix=${PRODUCT_INSTALL} ${CONFIGURE_FLAGS}
+./configure --prefix=${PRODUCT_INSTALL} ${CONFIGURE_FLAGS} "${opts[@]}"
 if [ $? -ne 0 ]; then
     echo "ERROR on configure"
     exit 1

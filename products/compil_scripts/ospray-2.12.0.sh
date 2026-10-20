@@ -38,6 +38,9 @@ CMAKE_OPTIONS+=" -DOSPRAY_ISPC_TARGET=neon-i32x4"
 CMAKE_OPTIONS+=" -DOSPRAY_ISPC_TARGET_LIST=neon"
 CMAKE_OPTIONS+=" -DOSPRAY_BUILD_ISA=NEON"
 
+if [ "$DIST_NAME" = "macOS" ]; then
+    CMAKE_OPTIONS+=" $SAT_CMAKE_OPTIONS"
+fi
 
 export ISPC_ARGS="--arch=aarch64 --target=neon-i32x4"
 

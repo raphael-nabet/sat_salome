@@ -26,14 +26,13 @@ fi
 
 # clean build directory
 rm -rf $BUILD_DIR && mkdir -p $BUILD_DIR && cd $BUILD_DIR
-echo $PRODUCT_INSTALL > /tmp/toto
+echo $PRODUCT_INSTALL
 CONFIGURE_OPTIONS=
 CONFIGURE_OPTIONS+=" -prefix $PRODUCT_INSTALL"
 CONFIGURE_OPTIONS+=" $BUILD_TYPE"
 CONFIGURE_OPTIONS+=" -opensource"
 CONFIGURE_OPTIONS+=" -nomake tests"
 CONFIGURE_OPTIONS+=" -nomake examples"
-CONFIGURE_OPTIONS+=" -no-rpath"
 CONFIGURE_OPTIONS+=" -confirm-license"
 CONFIGURE_OPTIONS+=" -c++std c++14"
 CONFIGURE_OPTIONS+=" -qt-libpng -no-eglfs -dbus-runtime"
@@ -45,12 +44,14 @@ CONFIGURE_OPTIONS+=" -pkg-config"
 
 #CONFIGURE_OPTIONS+=" -sysroot $(xcrun --show-sdk-path)"
 
+opts=()
 if [ "$DIST_NAME" = "macOS" ]; then
     CONFIGURE_OPTIONS+=" -no-assimp"
     CONFIGURE_OPTIONS+=" QMAKE_APPLE_DEVICE_ARCHS=arm64"
     CONFIGURE_OPTIONS+=" QMAKE_CXXFLAGS+=-Wno-enum-constexpr-conversion"
-#   CONFIGURE_OPTIONS+=" -device-option QMAKE_INCDIR_FREETYPE=$FREETYPE_INCLUDE_DIR"
-#   CONFIGURE_OPTIONS+=" -device-option QMAKE_LIBDIR_FREETYPE=$FREETYPE_LIBRARY"
+    #eval "opts=($SAT_CONFIGURE_OPTIONS)"
+else
+    CONFIGURE_OPTIONS+=" -no-rpath"
 fi
 
 # qt-harfbuzz - see spns #9694
@@ -72,7 +73,7 @@ fi
 
 echo
 echo "*** configure ${CONFIGURE_OPTIONS}"
-$SOURCE_DIR/configure ${CONFIGURE_OPTIONS}
+$SOURCE_DIR/configure ${CONFIGURE_OPTIONS} "${opts[@]}"
 if [ $? -ne 0 ]; then
 
     echo "ERROR on configure"

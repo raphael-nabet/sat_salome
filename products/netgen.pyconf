@@ -22,6 +22,7 @@ default :
 default_macOS:
 {
    depend : ['CAS','tcltk']
+   post_script : "setup-rpath-macOS.sh"
 }
 
 version_5_3_1_macOS:

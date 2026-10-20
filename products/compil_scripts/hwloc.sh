@@ -30,13 +30,18 @@ fi
 CONFIG_OPTIONS=
 CONFIG_OPTIONS+=" --prefix=$PRODUCT_INSTALL"
 
+opts=()
+if [ "$DIST_NAME" = "macOS" ]; then
+    eval "opts=($SAT_CONFIGURE_OPTIONS)"
+fi
+
 if [ -n ${SAT_DEBUG} ]; then
     CONFIG_OPTIONS+=" --enable-debug"
 fi
 
 echo
 echo "*** configure"
-$BUILD_DIR/configure $CONFIG_OPTIONS
+$BUILD_DIR/configure $CONFIG_OPTIONS "${opts[@]}"
 if [ $? -ne 0 ]; then
     echo "ERROR on configure"
     exit 2

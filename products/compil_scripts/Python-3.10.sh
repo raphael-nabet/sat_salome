@@ -4,7 +4,6 @@ echo "##########################################################################
 echo "$PRODUCT_NAME $VERSION"
 echo "##########################################################################"
 
-
 rm -rf $BUILD_DIR; mkdir $BUILD_DIR; cd $BUILD_DIR
 
 if [ ${#VERSION} -lt 5 ]; then
@@ -29,17 +28,18 @@ else
     CONFIGURE_ARGUMENTS+=" --with-ssl --enable-loadable-sqlite-extensions"
 fi
 
+opts=()
 if [ "$DIST_NAME" = "macOS" ]; then
     CONFIGURE_ARGUMENTS+=" --build=arm64-apple-darwin --host=arm64-apple-darwin"
+    eval "opts=($SAT_CONFIGURE_OPTIONS)"
     export ac_cv_func_pipe2=no
-    export CFLAGS="-mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET"
-    export LDFLAGS="-mmacosx-version-min=$MACOSX_DEPLOYMENT_TARGET"
     export CC=clang
 fi
 
 echo
+echo toto > /tmp/python.log
 echo   "*** configure --prefix=$PRODUCT_INSTALL $CONFIGURE_ARGUMENTS"
-$SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL $CONFIGURE_ARGUMENTS
+$SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL $CONFIGURE_ARGUMENTS "${opts[@]}"
 if [ $? -ne 0 ] ; then
     echo "ERROR on configure"
     exit 1

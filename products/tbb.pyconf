@@ -21,6 +21,11 @@ default :
     }
 }
 
+default_macOS:
+{
+    post_script : "setup-rpath-macOS.sh"
+}
+
 version_2023_1_0 :
 {
     compil_script :  "tbb-2023.1.0.sh"

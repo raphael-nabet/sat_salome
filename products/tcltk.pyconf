@@ -22,6 +22,7 @@ default :
 default_macOS:
 {
     build_source : "script"
+    post_script : "setup-rpath-macOS.sh"
     compil_script : "tcltk.sh"
 }
 

@@ -27,10 +27,10 @@ if [ -f autogen.pl ] && [ ! -f configure ]; then
     fi
 fi
 
+opts=()
+
 if [ "$DIST_NAME" == "macOS" ]; then
-    export SDKROOT="$(xcrun --show-sdk-path)"
-    export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
-    export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+    eval "opts=($SAT_CONFIGURE_OPTIONS)"
     export PKG_CONFIG_PATH="$OPENSSL_ROOT_DIR/lib/pkgconfig"
     export PKG_CONFIG_LIBDIR="$OPENSSL_ROOT_DIR/lib/pkgconfig:$SYSROOT/usr/lib/pkgconfig"
     export PKG_CONFIG_SYSROOT_DIR=$SYSROOT
@@ -46,7 +46,7 @@ if [ -n ${SAT_DEBUG} ]; then
 fi
 echo
 echo "*** configure"
-$BUILD_DIR/configure $CONFIG_OPTIONS
+$BUILD_DIR/configure $CONFIG_OPTIONS "${opts[@]}"
 if [ $? -ne 0 ]; then
     echo "ERROR on configure"
     exit 2

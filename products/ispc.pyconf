@@ -33,6 +33,12 @@ default_win :
     build_depend : ["cmake", "llvm"]
 }
 
+default_macOS:
+{
+    post_script : "setup-rpath-macOS.sh"
+}
+
+
 version_1_31_0_macOS :
 {
     build_source : "script"

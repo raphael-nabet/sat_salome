@@ -20,6 +20,11 @@ default :
     }
 }
 
+default_macOS:
+{
+    post_script : "setup-rpath-macOS.sh"
+}
+
 version_5_0_10 :
 {
     build_depend : [ "pmix", "libevent" ]

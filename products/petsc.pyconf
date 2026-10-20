@@ -28,6 +28,12 @@ default :
     post_script: "fix_permissions.sh"
 }
 
+default_macOS:
+{
+    post_script : "setup-rpath-macOS.sh"
+}
+
+
 version_3_24_3 :
 {
     compil_script :  "petsc-3.24.3.sh"

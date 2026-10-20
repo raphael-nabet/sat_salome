@@ -307,4 +307,14 @@ __overwrite__ :
         __condition__ : "APPLICATION.use_pyside == 'no'"
         'APPLICATION.rm_products_for_all_distributions'      : ['pyside']
     }
+    {
+        #
+        __condition__ : "APPLICATION.rpath == 'yes'"
+        'APPLICATION.environ.build.RPATH_ENABLE' : '1'
+    }
+    {
+        #
+        __condition__ : "APPLICATION.rpath == 'no'"
+        'APPLICATION.environ.build.RPATH_ENABLE' : '0'
+    }
 ]

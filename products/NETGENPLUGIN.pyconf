@@ -51,7 +51,7 @@ default :
 
 default_macOS :
 {
-    cmake_options : " -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include -DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}"
+    cmake_options : " -DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include"
 }
 
 default_win :

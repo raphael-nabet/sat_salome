@@ -29,10 +29,9 @@ fi
 
 echo $PMIX_ROOR_DIR
 
-if [ "$DIST_NAME" == "macOS" ]; then
-    export SDKROOT="$(xcrun --show-sdk-path)"
-    export CFLAGS="-isysroot $(xcrun --show-sdk-path)"
-    export CPPFLAGS="-isysroot $(xcrun --show-sdk-path)"
+opts=()
+if [ "$DIST_NAME" = "macOS" ]; then
+    eval "opts=($SAT_CONFIGURE_OPTIONS)"
 fi
 
 CONFIG_OPTIONS=
@@ -46,7 +45,7 @@ fi
 
 echo
 echo "*** configure"
-$BUILD_DIR/configure $CONFIG_OPTIONS
+$BUILD_DIR/configure $CONFIG_OPTIONS "${opts[@]}"
 if [ $? -ne 0 ]; then
     echo "ERROR on configure"
     exit 2
