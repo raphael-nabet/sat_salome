@@ -24,3 +24,24 @@ index 6917bd2c..166a0329 100644
    static void*       getDisplay();
    static Qt::HANDLE  getVisual();
  #endif
+diff --git a/src/LightApp/LightApp_Application.cxx b/src/LightApp/LightApp_Application.cxx
+index 37ea80b..b0e6be5 100644
+--- a/src/LightApp/LightApp_Application.cxx
++++ b/src/LightApp/LightApp_Application.cxx
+@@ -399,6 +399,16 @@ LightApp_Application::LightApp_Application()
+   QPixmap aLogo = aResMgr->loadPixmap( "LightApp", tr( "APP_DEFAULT_ICO" ), false );
+ 
+   desktop()->setWindowIcon( aLogo );
++#ifdef __APPLE__
++  // On macOS the Dock icon is the application icon, not the window icon.
++  // SALOME_APP_ICON (set by the launcher of the SALOME.app bundle) gives the
++  // icon of the bundle; default: the SALOME logo.
++  QString aDockIcon = QString::fromLocal8Bit( qgetenv( "SALOME_APP_ICON" ) );
++  if ( !aDockIcon.isEmpty() && QFile::exists( aDockIcon ) )
++    QApplication::setWindowIcon( QIcon( aDockIcon ) );
++  else
++    QApplication::setWindowIcon( QIcon( aLogo ) );
++#endif
+   desktop()->setDockableMenuBar( false );
+   desktop()->setDockableStatusBar( false );
+
