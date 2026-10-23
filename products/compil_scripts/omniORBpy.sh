@@ -19,7 +19,7 @@ if [ "$DIST_NAME" = "macOS" ]; then
 fi
 
 echo
-echo "*** configure  --prefix=${OMNIORB_ROOT_DIR}"
+echo "*** configure  --prefix=${OMNIORB_ROOT_DIR} ${opts[@]}"
 PYTHON=$PYTHONBIN $SOURCE_DIR/configure --prefix=${OMNIORB_ROOT_DIR} "${opts[@]}"
 if [ $? -ne 0 ]
 then

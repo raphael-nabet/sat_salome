@@ -17,7 +17,7 @@ if [ "$DIST_NAME" = "macOS" ]; then
 fi
 
 echo
-echo "*** configure --prefix=$PRODUCT_INSTALL --disable-ipv6"
+echo "*** configure --prefix=$PRODUCT_INSTALL --disable-ipv6 ${opts[@]}"
 PYTHON=$PYTHONBIN $SOURCE_DIR/configure --prefix=$PRODUCT_INSTALL --disable-ipv6 "${opts[@]}"
 if [ $? -ne 0 ]
 then
