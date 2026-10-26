@@ -127,10 +127,25 @@ CONFIGURE_FLAGS+=" --PETSC_DIR=${BUILD_DIR}"
 
 opts=()
 if [ "$DIST_NAME" = "macOS" ]; then
-    eval "opts=($SAT_CONFIGURE_OPTIONS)"
+    args=()
+    eval "args=($SAT_CONFIGURE_OPTIONS)"
+
+    # In this case, we are removing the specific compilation
+    # options from autotools because it is a python configure
+    # that builds petsc.
+    for a in "${args[@]}"; do
+        case "$a" in
+            ac_cv_*=*|--build=*|--host=*)
+                ;;
+            *)
+                opts+=("$a")
+                ;;
+        esac
+    done
+    eval "$opts"
 fi
 
-echo "*** configure --prefix=${PRODUCT_INSTALL} ${CONFIGURE_FLAGS}"
+echo "*** configure --prefix=${PRODUCT_INSTALL} ${CONFIGURE_FLAGS} ${opts[@]}"
 ./configure --prefix=${PRODUCT_INSTALL} ${CONFIGURE_FLAGS} "${opts[@]}"
 if [ $? -ne 0 ]; then
     echo "ERROR on configure"
