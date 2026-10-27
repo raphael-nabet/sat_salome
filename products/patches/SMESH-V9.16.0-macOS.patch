@@ -187,3 +187,33 @@ diff --color=auto -Naur smesh_old/src/StdMeshersGUI/StdMeshersGUI_SubShapeSelect
  #include "StdMeshersGUI_SubShapeSelectorWdg.h"
  
  // SMESH Includes
+diff --git a/src/SMDS/SMDS_ElementFactory.cxx b/src/SMDS/SMDS_ElementFactory.cxx
+index 3a03cc5..314968a 100644
+--- a/src/SMDS/SMDS_ElementFactory.cxx
++++ b/src/SMDS/SMDS_ElementFactory.cxx
+@@ -527,6 +527,7 @@ void SMDS_NodeFactory::SetShapeDim( int shapeID, int dim )
+ 
+ SMDS_ElementChunk::SMDS_ElementChunk( SMDS_ElementFactory* factory, smIdType id0 ):
+   myFactory( factory ),
++  myElements( 0 ),
+   my1stID( id0 )//,
+   //mySubIDSet( 0 )
+   // myMinSubID( std::numeric_limits<int>::max() ),
+@@ -553,7 +554,17 @@ SMDS_ElementChunk::SMDS_ElementChunk( SMDS_ElementFactory* factory, smIdType id0
+ 
+ SMDS_ElementChunk::~SMDS_ElementChunk()
+ {
+-  delete [] myElements;
++  // Delete the array with its real element type: deleting an array of
++  // SMDS_MeshNode/SMDS_MeshCell through a SMDS_MeshElement* is undefined
++  // behaviour. As SMDS_MeshElement is abstract, clang concludes that the
++  // destructor loop is unreachable: on Linux it is silently dropped, on macOS
++  // arm64 unreachable code is a trap (brk #1) => crash in SMESH_Mesh::Clear().
++  if ( !myFactory )
++    return;
++  if ( myFactory->myIsNodal )
++    delete [] static_cast< SMDS_MeshNode* >( myElements );
++  else
++    delete [] static_cast< SMDS_MeshCell* >( myElements );
+   myFactory->myChunksWithUnused.erase( this );
+ }
