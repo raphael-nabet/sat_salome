@@ -247,15 +247,15 @@ APPLICATION :
         'HEXABLOCKPLUGIN'
         'meshbooleanplugin'
         'mmgplugin'
-        'HOMARD'
-        'FIELDS'
+        'HOMARD': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
+        'FIELDS' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'PARAVIS': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'JOBMANAGER'
-        'YACS'
-        'YACSGEN'
+        'YACS': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
+        'YACSGEN': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'DOCUMENTATION'
         'SAMPLES'
-        'COMPONENT'
+        'COMPONENT': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'PYCALCULATOR'
         'CALCULATOR'
         'HELLO'
@@ -264,13 +264,13 @@ APPLICATION :
         'EFICAS_TOOLS'
         'PY2CPP'
         'ADAO'
-        'ADAO_INTERFACE'
-        'PARAVISADDONS'
+        'ADAO_INTERFACE': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
+        'PARAVISADDONS': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'OPENTURNS_SALOME'
         'YDEFX'
         'pmml'
         'pybatch' : '65f6e083'
-        'SALOMEBOOTSTRAP'
+        'SALOMEBOOTSTRAP': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'SOLVERLAB'
         'TopIIVolMesh'
         #'TESTBASE'

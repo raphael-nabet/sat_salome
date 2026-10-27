@@ -49,6 +49,20 @@ default :
     patches: []
 }
 
+default_macOS :
+{
+    cmake_options : '-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=" -w -Wno-narrowing -Wno-sign-conversion" -DCMAKE_CXX_FLAGS="-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION -D_LIBCPP_ENABLE_CXX17_REMOVED_UNEXPECTED_FUNCTIONS -w -Wno-narrowing -Wno-sign-conversion"'
+    git_info:
+    {
+      repositories :
+      {
+            github : "https://github.com/raphael-nabet/kernel.git"
+      }
+      git_commands: [ 'git switch support-for-macos-platform' ]
+    }
+}
+
+
 default_win :
 {
     cmake_options : "-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=%SWIG_ROOT_DIR%/bin/swig.exe -DCMAKE_CXX_COMPILER_ARCHITECTURE_ID=x64 -DBOOST_ROOT=%BOOST_ROOT_DIR% -DBOOST_DEBUG=ON -DBoost_ADDITIONAL_VERSIONS=\"%BOOST_VERSION% %BOOST_VERSION_MajorMinor%\" -DBOOST_INCLUDEDIR=%Boost_INCLUDE_DIR% -DBOOST_LIBRARYDIR=%BOOST_LIBRARY_DIR%b -DSALOME_USE_64BIT_IDS=ON "
@@ -195,7 +209,6 @@ version_V9_16_0 :
 
 version_V9_16_0_macOS :
 {
-    cmake_options : '-DSALOME_USE_LIBBATCH=ON -DSWIG_EXECUTABLE=${SWIG_ROOT_DIR}/bin/swig -DSALOME_CMAKE_DEBUG=ON -DSALOME_USE_64BIT_IDS=ON -DCMAKE_C_FLAGS=" -w -Wno-narrowing -Wno-sign-conversion" -DCMAKE_CXX_FLAGS="-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION -D_LIBCPP_ENABLE_CXX17_REMOVED_UNEXPECTED_FUNCTIONS -w -Wno-narrowing -Wno-sign-conversion"'
     patches : ['KERNEL-macOS-V9_16_0.p001.patch', 'KERNEL.macos.arm64.patch']
 }
 

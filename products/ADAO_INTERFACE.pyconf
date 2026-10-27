@@ -38,7 +38,14 @@ default :
 
 default_macOS:
 {
-    patches : [ "ADAO_INTERFACE.macos.arm64.patch" ]
+    git_info:
+    {
+      repositories :
+      {
+            github : "https://github.com/raphael-nabet/adao_interface.git"
+      }
+      git_commands: [ 'git switch support-for-macos-platform' ]
+    }
 }
 
 default_FD44 :
@@ -76,6 +83,11 @@ default_FD44 :
         is_SALOME_product: "yes"
     }
     patches : ['ADAO_INTERFACE-PyObjectRAII-FD44.patch']
+}
+
+version_V9_16_0_macOS :
+{
+    patches : [ "ADAO_INTERFACE.macos.arm64.patch" ]
 }
 
 version_V9_16_0_FD44 :
