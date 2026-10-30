@@ -44,7 +44,7 @@ default :
         {
             rpm : ["zlib", "lz4", "openmpi", "gsl", "libgeotiff", "giflib", "geos", "sqlite", "netcdf", "libxml++", "freetype", "pcre"]
             rpm_dev : ["perl-interpreter", "qt5-devel", "openmpi-devel", "gsl-devel", "libpng-devel", "libtiff-devel", "libgeotiff-devel", "giflib-devel", "geos-devel", "netcdf-devel", "texlive-dvipng",
-                       "libxml++-devel", "xcb-util-cursor-devel", "xcb-util-image-devel", "xcb-util-keysyms-devel", "xcb-util-renderutil-devel", "xcb-util-wm-devel",
+                       "libxml++-devel", "xcb-util-cursor-devel", "xcb-util-image-devel", "xcb-util-keysyms-devel", "xcb-util-renderutil-devel", "xcb-util-wm-devel", "libicu-devel",
                        "libXrender-devel", "libxkbcommon-devel", "libxkbcommon-x11-devel", "libXi-devel", "libXcursor-devel", "libXcomposite-devel", "freetype-devel"] # libdrm-devel xcb-util-xrm-devel
         }
         "CO9" :
