@@ -280,7 +280,7 @@ APPLICATION :
         pip : 'yes'
         pip_install_dir : 'python'
         single_install_dir : "no"
-        modules_use_pip : "no"
+        modules_use_pip : "yes"
     }
 }
 __overwrite__ :
