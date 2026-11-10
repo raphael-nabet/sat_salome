@@ -30,6 +30,11 @@ default :
     }
 }
 
+default_macOS:
+{
+    post_script : "setup-rpath-macOS.sh"
+}
+
 version_6_0_0 :
 {
     compil_script :  'ParaView-6.0.0.sh'
