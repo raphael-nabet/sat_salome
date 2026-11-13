@@ -271,7 +271,7 @@ APPLICATION :
         'pmml'
         'pybatch' : '65f6e083'
         'SALOMEBOOTSTRAP': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
-        'SOLVERLAB'
+        'SOLVERLAB': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'TopIIVolMesh'
         #'TESTBASE'
         'CEATESTBASE'

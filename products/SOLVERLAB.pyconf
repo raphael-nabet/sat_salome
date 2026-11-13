@@ -46,11 +46,6 @@ default :
     patches: []
 }
 
-default_macOS :
-{
-    patches: ['SOLVERLAB.macos.arm64.patch']
-}
-
 default_MPI :
 {
     depend :
@@ -87,6 +82,11 @@ version_V10_0_0_MPI :
         'openmpi'
     ]
     opt_depend : ['mpi4py']
+}
+
+version_V9_16_0_macOS :
+{
+    patches: ['SOLVERLAB.macos.arm64.patch']
 }
 
 version_V9_16_0_MPI :
