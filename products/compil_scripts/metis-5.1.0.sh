@@ -4,14 +4,21 @@ echo "##########################################################################
 echo "Metis" $VERSION
 echo "##########################################################################"
 
+rm -rf $BUILD_DIR
+mkdir $BUILD_DIR
+cd $BUILD_DIR
 
-mkdir -p $PRODUCT_INSTALL
+cp -r "$SOURCE_DIR/." .
 
-cd $SOURCE_DIR
+CMAKE_OPTIONS=
+if [ "$DIST_NAME" = "macOS" ]; then
+    CMAKE_OPTIONS+=" $SAT_CMAKE_OPTIONS"
+fi
 
 echo
 echo "*** make config"
-make config prefix=${PRODUCT_INSTALL} ${CMAKE_OPTIONS}
+make config prefix=${PRODUCT_INSTALL} CMAKE_ARGS="${CMAKE_OPTIONS}"
+
 if [ $? -ne 0 ]
 then
     echo "ERROR on make config"

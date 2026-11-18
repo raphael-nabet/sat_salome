@@ -14,7 +14,7 @@ APPLICATION :
     base       : 'no'
     python3    : 'yes'
     use_pyside : 'no'
-    platform   : ['macOS25']
+    platform   : ['macOS25', 'macOS26', 'macOS27']
     environ  :
     {
         build :
