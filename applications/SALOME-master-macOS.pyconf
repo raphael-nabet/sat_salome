@@ -15,6 +15,8 @@ APPLICATION :
     python3    : 'yes'
     use_pyside : 'no'
     platform   : ['macOS25', 'macOS26', 'macOS27']
+    minimal_sdk : '15.0'
+    build_sdk : '27.0' #'26.5' #'27.0' #'' to use the default sdk
     environ  :
     {
         build :
@@ -25,8 +27,8 @@ APPLICATION :
            VTK_SMP_IMPLEMENTATION_TYPE : 'TBB' # OpenMP # choose among: sequential / OpenMP / TBB switches
            SALOME_GMSH_HEADERS_STD : '1'
            OMNIORBPY_REMOVE_INIT : '0'
-           MACOSX_DEPLOYMENT_TARGET :'15.0'
-           MACOSX_BUILD_SDK :'26.5'
+           MACOSX_DEPLOYMENT_TARGET : $minimal_sdk
+           MACOSX_BUILD_SDK : $build_sdk
         }
         launch :
         {
