@@ -14,7 +14,9 @@ APPLICATION :
     base       : 'no'
     python3    : 'yes'
     use_pyside : 'no'
-    platform   : ['macOS25']
+    platform   : ['macOS25', 'macOS26', 'macOS27']
+    minimal_sdk : '15.0'
+    build_sdk : '27.0' #'26.5' #'27.0' #'' to use the default sdk
     environ  :
     {
         build :
@@ -25,8 +27,8 @@ APPLICATION :
            VTK_SMP_IMPLEMENTATION_TYPE : 'TBB' # OpenMP # choose among: sequential / OpenMP / TBB switches
            SALOME_GMSH_HEADERS_STD : '1'
            OMNIORBPY_REMOVE_INIT : '0'
-           MACOSX_DEPLOYMENT_TARGET :'15.0'
-           MACOSX_BUILD_SDK :'26.5'
+           MACOSX_DEPLOYMENT_TARGET : $minimal_sdk
+           MACOSX_BUILD_SDK : $build_sdk
         }
         launch :
         {
@@ -116,7 +118,6 @@ APPLICATION :
         mdurl: '0.1.2'
         medfile : {tag: '6.0.1' , base: 'no', section : 'version_6_0_1_macOS'}
         mesa : {tag: '19.0.8' , base: 'no', section : 'version_19_0_8_macOS'}
-        #MeshGems : '2.15-1'
         meshio : {tag: '5.3.5' , base: 'no', section : 'version_5_3_5_no_pip'}
         meson: '1.9.1'
         meson_python: '0.14.0'
@@ -214,20 +215,16 @@ APPLICATION :
         toml: '0.10.2'
         tqdm : '4.66.5'
         tomli : '2.0.1'
-        #TTK : '1.3.0'
         typing_extensions : '4.13.2'
         urllib3 : '1.23'
-        #zeromq: '4.3.1'
         zipp : '3.17.0'
         URANIE : {tag:'4.8.0', base: 'no', section: 'version_4_8_0_macOS'}
         wheel : '0.36.2'
-        #xarray: '2023.12.0'
 
         # SALOME MODULES :
         'CONFIGURATION' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'SALOME'
         'SHAPER': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
-        #'dxf_shaper_plugin'
         'SHAPERSTUDY' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'RESTRICTED'
         'LIBBATCH' : {tag:'V2_6_1', base: 'no', section: 'version_V2_6_1_macOS'}
@@ -238,10 +235,6 @@ APPLICATION :
         'GEOM'
         'SMESH' : {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'NETGENPLUGIN': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
-        #'BLSURFPLUGIN'
-        #'GHS3DPLUGIN'
-        #'HYBRIDPLUGIN'
-        #'HexoticPLUGIN'
         'GMSHPLUGIN': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'HEXABLOCK'
         'HEXABLOCKPLUGIN'
@@ -273,7 +266,6 @@ APPLICATION :
         'SALOMEBOOTSTRAP': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'SOLVERLAB': {tag:'V9_16_0', base: 'no', section: 'version_V9_16_0_macOS'}
         'TopIIVolMesh'
-        #'TESTBASE'
         'CEATESTBASE'
     }
     profile :
