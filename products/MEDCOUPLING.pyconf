@@ -70,14 +70,6 @@ default_macOS :
               "openmpi"
               ]
     opt_depend : ["ParMetis", "metis", "BasicIterativeStatistics", "lapack", "openblas"]
-    git_info:
-    {
-      repositories :
-      {
-            github : "https://github.com/raphael-nabet/medcoupling.git"
-      }
-      git_commands: [ 'git switch support-for-macos-platform' ]
-    }
 }
 
 default_win :

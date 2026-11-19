@@ -36,18 +36,6 @@ default :
     patches : []
 }
 
-default_macOS:
-{
-    git_info:
-    {
-      repositories :
-      {
-            github : "https://github.com/raphael-nabet/adao_interface.git"
-      }
-      git_commands: [ 'git switch support-for-macos-platform' ]
-    }
-}
-
 default_FD44 :
 {
     name : "ADAO_INTERFACE"

@@ -61,14 +61,6 @@ default :
 default_macOS :
 {
     cmake_options : '-DFREETYPE_LIBRARY=${FREETYPE_ROOT_DIR}/lib/libfreetype.dylib -DFREETYPE_INCLUDE_DIRS=${FREETYPE_ROOT_DIR}/include'
-    git_info:
-    {
-      repositories :
-      {
-            github : "https://github.com/raphael-nabet/paravisaddons_common.git"
-      }
-      git_commands: [ 'git switch support-for-macos-platform' ]
-    }
 }
 
 default_win :

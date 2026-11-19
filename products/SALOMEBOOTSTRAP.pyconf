@@ -28,20 +28,6 @@ default :
     patches: []
 }
 
-default_macOS:
-{
-    git_info:
-    {
-      repositories :
-      {
-        github : "https://github.com/raphael-nabet/salome_bootstrap.git"
-      }
-      git_commands: [
-                     'git switch support-for-macos-platform'
-                    ]
-    }
-}
-
 default_win:
 {
     depend : ["Python", "pthreads"]
