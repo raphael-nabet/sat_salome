@@ -21,6 +21,12 @@ if [ $DIST_NAME = "macOS" ]; then
     for file in $(grep -ril "fvisibility" .); do
         sed -i '' -e "s/-fvisibility=hidden//g" "$file"
     done
+    # Shared library: the default static build defines FREEIMAGE_LIB, which
+    # removes the constructor FreeImage_SO_Initialise() that registers the
+    # plugins. OCCT never calls FreeImage_Initialise(), so with the static
+    # library FreeImage knows 0 format and every image is refused
+    # ("Error: image '...marker_dot.png' has unsupported file format").
+    CMAKE_OPTIONS+=" -DBUILD_SHARED_LIBS=ON -DFREEIMAGE_STATIC=OFF"
     CMAKE_OPTIONS+=" ${SAT_CMAKE_OPTIONS}"
 fi
 
@@ -49,6 +55,16 @@ if [ $? -ne 0 ]
 then
     echo "ERROR on make install"
     exit 3
+fi
+
+if [ $DIST_NAME = "macOS" ]; then
+    # The library must not be static: OCCT would link it inside TKService
+    # without the plugin registration (see above)
+    # (target "FreeImage": libFreeImage.dylib, case-insensitive check)
+    if ! ls ${PRODUCT_INSTALL}/lib | grep -qi '^libfreeimage.*\.dylib$'; then
+        echo "ERROR: no libFreeImage.dylib in ${PRODUCT_INSTALL}/lib"
+        exit 4
+    fi
 fi
 
 echo
