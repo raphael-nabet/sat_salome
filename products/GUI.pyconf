@@ -82,7 +82,7 @@ default_macOS:
 version_V9_16_0_macOS:
 {
     cmake_build_type : 'RelWithDebInfo'
-    patches : [ "GUI-V9.16.0-macOS-p002.patch", "GUI-V9.16.0-macOS-p003.patch", "GUI.macos.arm64.patch" ]
+    patches : [ "GUI-V9.16.0-macOS-p002.patch", "GUI-V9.16.0-macOS-p003.patch", "GUI-V9.16.0-macOS-p004.patch" ]
 }
 
 default_FD44:

@@ -77,6 +77,7 @@ def set_paraview_env(env, version):
         env.prepend("PATH", os.path.join(root, "include", "paraview"))
         env.prepend("DYLD_LIBRARY_PATH", paralib)
         env.prepend("PYTHONPATH", paralib)
+        env.prepend("PATH", os.path.join(root, "Applications/paraview.app/Contents/MacOS"))
 
     else:
         # see spns #48124 or bos #47676 - since we use PARAVIEW_VERSIONED_INSTALL=OFF
