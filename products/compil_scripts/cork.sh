@@ -11,8 +11,13 @@ cp -r $SOURCE_DIR/* .
 
 if [ "$DIST_NAME" = macOS ]; then
     export SDKROOT=$(xcrun --show-sdk-path)
-    GMP_PREFIX=$(brew --prefix gmp 2>/dev/null)
-    [ -f "$GMP_PREFIX/include/gmp.h" ] || GMP_PREFIX=/opt/homebrew
+    # APPLICATION.brew_env: gmp is exposed in $SAT_BREW_ENV (brew is not in PATH)
+    if [ -n "$SAT_BREW_ENV" ] && [ -f "$SAT_BREW_ENV/include/gmp.h" ]; then
+        GMP_PREFIX=$SAT_BREW_ENV
+    else
+        GMP_PREFIX=$(brew --prefix gmp 2>/dev/null)
+        [ -f "$GMP_PREFIX/include/gmp.h" ] || GMP_PREFIX=/opt/homebrew
+    fi
     cat > makeConstants <<EOF
 GMP_INC_DIR = ${GMP_PREFIX}/include
 GMP_LIB_DIR = ${GMP_PREFIX}/lib

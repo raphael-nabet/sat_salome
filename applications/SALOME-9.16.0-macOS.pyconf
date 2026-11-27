@@ -10,6 +10,7 @@ APPLICATION :
     verbose    : 'no'
     cmake_build_type: 'Release' # Debug, RelWithDebInfo, Release, MinSizeRel
     rpath      : 'yes'
+    brew_env   : 'yes' # macOS: only the brew formulae of the native products are visible (sat config <app> --brew_env)
     debug      : 'no'
     base       : 'no'
     python3    : 'yes'
